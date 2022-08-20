@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auth
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: auth
+  template:
+    metadata:
+      labels:
+        app: auth
+    spec:
+      containers:
+        - name: auth
+          image: us.gcr.io/shbooks/auth
+          # The app is not meant to be published so let allocate limited resources to reduce Google Cloud cost during dev/test
+          resources:
+            requests:
+              cpu: 250m
+              memory: 128Mi
+            limits:
+              cpu: 600m
+              memory: 256Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: auth-cluster-ip
+spec:
+  selector:
+    app: auth
+  ports:
+    - name: auth-port
+      port: 8080
+      targetPort: 8080
+      protocol: TCP
