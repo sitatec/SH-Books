@@ -13,12 +13,7 @@ router.post(
   emailValidator(),
   passwordValidator(),
   (request: Request, response: Response) => {
-    const requestValidationErrors = validateRequest(request);
-    if (requestValidationErrors) {
-      return response
-        .status(StatusCodes.BAD_REQUEST)
-        .send(requestValidationErrors);
-    }
+    validateRequest(request);
 
     console.log("Creating a user...");
 

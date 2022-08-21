@@ -1,5 +1,6 @@
 import { Request } from "express";
 import { body, validationResult } from "express-validator";
+import RequestValidationError from "../errors/request-validation-error";
 
 export const emailValidator = () => {
   return body("email").isEmail().withMessage("Invalid email");
@@ -14,13 +15,9 @@ export const passwordValidator = () => {
     );
 };
 
-export const validateRequest = (
-  request: Request
-): Record<string, string> | undefined => {
+export const validateRequest = (request: Request) => {
   const result = validationResult(request);
   if (!result.isEmpty()) {
-    const errorMessages: Record<string, string> = {};
-    result.array().forEach((error) => (errorMessages[error.param] = error.msg));
-    return errorMessages;
+    throw new RequestValidationError(result.array());
   }
 };
