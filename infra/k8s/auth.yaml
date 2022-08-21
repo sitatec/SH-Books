@@ -36,3 +36,43 @@ spec:
       port: 8080
       targetPort: 8080
       protocol: TCP
+---
+####################### DATABASE #########################
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auth-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      db: auth-db
+  template:
+    metadata:
+      labels:
+        db: auth-db
+    spec: 
+      containers:
+        - name: auth-db
+          image: mongo
+          # The app is not meant to be published so let allocate limited resources to reduce Google Cloud cost during dev/test
+          resources:
+            request:
+              cpu: 300m
+              memory: 300Mi
+            limits:
+              cpu: '1'
+              memory: 1Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: auth-db-cluster-ip
+spec:
+  selector:
+    db: auth-db
+  ports:
+    - name: auth-db-port
+      port: 27017
+      targetPort: 27017
+      protocol: TCP
