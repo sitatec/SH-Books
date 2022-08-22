@@ -5,10 +5,13 @@ deploy:
     manifests:
       - ./infra/k8s/*
 build:
-  googleCloudBuild:
-    projectId: shbooks
+  local:
+    push: false
+  # googleCloudBuild:
+  #   projectId: shbooks
   artifacts:
-    - image: us.gcr.io/shbooks/auth
+    # - image: us.gcr.io/shbooks/auth
+    - image: beretedocker/shbooks/auth
       context: services/auth
       docker:
         dockerfile: Dockerfile

@@ -13,11 +13,12 @@ export interface HttpErrorResponse {
 }
 
 export type ResponseStatusMessage =
+  | "invalid-input-format"
   | "invalid-input"
   | "server-error"
+  | "bad-request"
   | "not-found"
-  | "unknown"
-  | "invalid-input-format";
+  | "unknown";
 
 interface Input {
   key: string;

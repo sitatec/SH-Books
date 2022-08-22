@@ -17,7 +17,7 @@ const errorHandler = (
   const isInvalidInputFormat =
     error instanceof SyntaxError && statusCode === StatusCodes.BAD_REQUEST;
   const errorResponse : HttpErrorResponse = {
-    status: isInvalidInputFormat ? "invalid-input-format" : "server-error",
+    status: isInvalidInputFormat ? "invalid-input-format" : "unknown",
     errors: [{ message: error.message }],
   };
   response.status(statusCode).send(errorResponse);

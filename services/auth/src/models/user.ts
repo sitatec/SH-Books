@@ -1,4 +1,5 @@
 import {Document, Model, Schema, model} from 'mongoose';
+import Password from '../security/password';
 
 class UserType {
   constructor(public email: string, public password: string){}
@@ -11,18 +12,25 @@ interface UserModel extends Model<UserDocument> {
   insert(user: UserType): Promise<UserDocument>;
 }
 
-
-const RequiredString = {
+const RequiredStringSchema = {
   type: String,
   required: true,
 };
+
 const userSchema = new Schema({
-  email: RequiredString,
-  password: RequiredString,
+  email: RequiredStringSchema,
+  password: RequiredStringSchema,
 });
 
 userSchema.statics.build = (userData: UserType) => new User(userData);
 userSchema.statics.insert = (...userData: UserType[]) => User.create(userData);
+userSchema.pre("save", async function (done) {
+  if(this.isModified("password")){
+    const hashedPassword = await Password.hash(this.password!);
+    this.password = hashedPassword;
+  }
+  done();
+});
 
 const User = model<UserDocument, UserModel>("User", userSchema);
 
