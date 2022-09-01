@@ -5,9 +5,9 @@ class UserType {
   constructor(public email: string, public password: string){}
 }
 
-interface UserDocument extends Document, UserType {}
+export interface UserDocument extends Document, UserType {}
 
-interface UserModel extends Model<UserDocument> {
+export interface UserModel extends Model<UserDocument> {
   build(user: UserType): UserDocument;
   insert(user: UserType): Promise<UserDocument>;
 }

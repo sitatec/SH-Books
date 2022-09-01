@@ -16,6 +16,9 @@ spec:
         - name: auth
           # image: us.gcr.io/shbooks/auth
           image: beretedocker/shbooks/auth
+          envFrom:
+            - secretRef:
+                name: jwt-secret
           # The app is not meant to be published so let allocate limited resources to reduce Google Cloud cost during dev/test
           resources:
             requests:
