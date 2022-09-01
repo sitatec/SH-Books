@@ -6,11 +6,11 @@ const scryptAsync = promisify(scrypt);
 export default abstract class Password {
   static async hash(password: string) {
     const salt = randomBytes(8).toString("hex");
-    const hashedPassword = Password.scrypt(password, salt);
+    const hashedPassword = await Password.scrypt(password, salt);
     return `${hashedPassword}.${salt}`; 
   }
 
-  static async compare(password: string, hash: string){
+  static async verify(password: string, hash: string){
     const [hashedPassword, salt] = hash.split(".");
     return await Password.scrypt(password, salt) === hashedPassword;
   }
