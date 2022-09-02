@@ -1,6 +1,6 @@
 import { Document, Model, Schema, model, SchemaOptions } from "mongoose";
-import { clearObjectOwnProperties } from "../security/object_utils";
-import Password from "../security/password";
+import { clearObjectOwnProperties } from "../utils/object_utils";
+import { hashPassword } from "../security/password-hashing";
 
 class UserType {
   constructor(public email: string, public password: string) {}
@@ -20,7 +20,7 @@ const RequiredStringSchema = {
 
 const toJson: SchemaOptions = {
   toJSON: {
-    transform(document: UserDocument, returnValue){
+    transform(document: UserDocument, returnValue) {
       clearObjectOwnProperties(returnValue); // remove mongo specific properties and naming conventions
       returnValue.id = document.id;
       returnValue.email = document.email;
@@ -40,7 +40,7 @@ userSchema.statics.build = (userData: UserType) => new User(userData);
 userSchema.statics.insert = (...userData: UserType[]) => User.create(userData);
 userSchema.pre("save", async function (done) {
   if (this.isModified("password")) {
-    const hashedPassword = await Password.hash(this.password!);
+    const hashedPassword = await hashPassword(this.password!);
     this.password = hashedPassword;
   }
   done();

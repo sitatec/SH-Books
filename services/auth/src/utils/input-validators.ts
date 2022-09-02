@@ -1,12 +1,10 @@
-import { Request } from "express";
-import { body, validationResult } from "express-validator";
-import RequestValidationError from "../errors/request-validation-error";
+import { body } from "express-validator";
 
 export const emailValidator = () => {
   return body("email").isEmail().withMessage("Invalid email");
 };
 
-export const passwordValidator = () => {
+export const strongPasswordValidator = () => {
   return body("password")
     .trim()
     .isStrongPassword({ minLength: 6 })
@@ -15,9 +13,9 @@ export const passwordValidator = () => {
     );
 };
 
-export const validateRequest = (request: Request) => {
-  const result = validationResult(request);
-  if (!result.isEmpty()) {
-    throw new RequestValidationError(result.array());
-  }
+export const ensureNotEmpty = (fieldName: string) => {
+  return body(fieldName)
+    .trim()
+    .notEmpty()
+    .withMessage(`${capitalizeFirstLetter(fieldName)} is required`);
 };
