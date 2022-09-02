@@ -2,8 +2,9 @@ import { Document, Model, Schema, model, SchemaOptions } from "mongoose";
 import { clearObjectOwnProperties } from "../utils/object_utils";
 import { hashPassword } from "../security/password-hashing";
 
-class UserType {
-  constructor(public email: string, public password: string) {}
+export interface UserType {
+  email: string;
+  password: string;
 }
 
 export interface UserDocument extends Document, UserType {}
