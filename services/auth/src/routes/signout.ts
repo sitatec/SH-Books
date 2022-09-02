@@ -2,8 +2,9 @@ import { Router } from "express";
 
 const router = Router();
 
-router.get("/api/users/signout/:id", (request, response) => {
-  response.send("Hi there!");
+router.post("/api/users/signout", (request, response) => {
+  request.session = null;
+  response.send();
 });
 
 export default router;
