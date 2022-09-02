@@ -1,8 +1,9 @@
-import {Document, Model, Schema, model} from 'mongoose';
-import Password from '../security/password';
+import { Document, Model, Schema, model, SchemaOptions } from "mongoose";
+import { clearObjectOwnProperties } from "../security/object_utils";
+import Password from "../security/password";
 
 class UserType {
-  constructor(public email: string, public password: string){}
+  constructor(public email: string, public password: string) {}
 }
 
 export interface UserDocument extends Document, UserType {}
@@ -17,15 +18,28 @@ const RequiredStringSchema = {
   required: true,
 };
 
-const userSchema = new Schema({
-  email: RequiredStringSchema,
-  password: RequiredStringSchema,
-});
+const toJson: SchemaOptions = {
+  toJSON: {
+    transform(document: UserDocument, returnValue){
+      clearObjectOwnProperties(returnValue); // remove mongo specific properties and naming conventions
+      returnValue.id = document.id;
+      returnValue.email = document.email;
+    },
+  },
+};
+
+const userSchema = new Schema(
+  {
+    email: RequiredStringSchema,
+    password: RequiredStringSchema,
+  },
+  toJson
+);
 
 userSchema.statics.build = (userData: UserType) => new User(userData);
 userSchema.statics.insert = (...userData: UserType[]) => User.create(userData);
 userSchema.pre("save", async function (done) {
-  if(this.isModified("password")){
+  if (this.isModified("password")) {
     const hashedPassword = await Password.hash(this.password!);
     this.password = hashedPassword;
   }
