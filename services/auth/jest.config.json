@@ -3,6 +3,6 @@
   "preset": "ts-jest",
   "testEnvironment": "node",
   "setupFilesAfterEnv": [
-    "./test/__setup__.ts"
+    "./test/setup.ts"
   ]
 }

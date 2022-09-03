@@ -1,3 +1,5 @@
+import mongoose from "mongoose";
+
 expect.extend({
   // TODO test
   toContainObject(received, argument) {
@@ -32,4 +34,9 @@ declare global {
   }
 }
 
-export {};
+export const cleanDB = async () => {
+  const collections = await mongoose.connection.db.collections();
+  for (const collection of collections) {
+    await collection.deleteMany({});
+  }
+};

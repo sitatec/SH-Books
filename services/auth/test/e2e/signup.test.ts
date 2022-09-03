@@ -2,6 +2,9 @@ import { StatusCodes } from "http-status-codes";
 import supertest from "supertest";
 import app from "../../src/app";
 import User, { UserType } from "../../src/models/user";
+import { cleanDB } from "../utils";
+
+beforeEach(cleanDB);
 
 it("Should successfully signup user", async () => {
   const user: UserType = {
