@@ -11,10 +11,15 @@ import {
 } from "./routes";
 
 const app = Express();
-app.set('trust proxy', true);
+app.set("trust proxy", true);
 
 app.use(Express.json());
-app.use(cookieSession({ signed: false, secure: true }));
+app.use(
+  cookieSession({
+    signed: false,
+    secure: process.env.NODE_ENV != "test",
+  })
+);
 app.use(currentUserRouter);
 app.use(signupRouter);
 app.use(signInRouter);

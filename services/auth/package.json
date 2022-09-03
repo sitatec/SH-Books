@@ -9,7 +9,6 @@
     "tw": "jest --silent --watch",
     "ci-test": "jest"
   },
-  "keywords": [],
   "author": "Sita Bérété",
   "license": "ISC",
   "dependencies": {

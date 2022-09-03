@@ -2,20 +2,14 @@ import { StatusCodes } from "http-status-codes";
 import supertest from "supertest";
 import app from "../../src/app";
 import { UserType } from "../../src/models/user";
+import { signup } from "../utils";
 
 const user: UserType = {
   email: "test@test.com",
   password: "flsj34B.",
 };
 
-const signup = () => {
-  return supertest(app)
-    .post("/api/users/signup/")
-    .send(user)
-    .expect(StatusCodes.CREATED);
-};
-
-beforeAll(signup);
+beforeAll(() => signup(user));
 
 it("Should successfully sign in user", async () => {
   const response = await supertest(app)

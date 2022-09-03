@@ -1,6 +1,8 @@
 import { connect } from "mongoose";
 import app from './app';
 
+// TODO use appropriated log levels in the entire project
+
 const startServer = async () => {
   console.log("Starting server...");
   try {

@@ -1,4 +1,8 @@
+import { StatusCodes } from "http-status-codes";
 import mongoose from "mongoose";
+import app from "../src/app";
+import { UserType } from "../src/models/user";
+import supertest from "supertest";
 
 expect.extend({
   // TODO test
@@ -33,6 +37,13 @@ declare global {
     }
   }
 }
+
+export const signup = (user: UserType) => {
+  return supertest(app)
+    .post("/api/users/signup/")
+    .send(user)
+    .expect(StatusCodes.CREATED);
+};
 
 export const cleanDB = async () => {
   const collections = await mongoose.connection.db.collections();
