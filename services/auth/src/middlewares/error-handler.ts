@@ -13,11 +13,9 @@ const errorHandler = (
   if (error instanceof HttpError) {
     return response.status(error.statusCode).send(error.toHttpErrorResponse());
   }
+  // If the request contains malformed json, the Express.json() middleware will throw an error with status field.
   const statusCode = (error as any).status ?? StatusCodes.INTERNAL_SERVER_ERROR;
-  const isInvalidInputFormat =
-    error instanceof SyntaxError && statusCode === StatusCodes.BAD_REQUEST;
   const errorResponse : HttpErrorResponse = {
-    status: isInvalidInputFormat ? "invalid-input-format" : "unknown",
     errors: [{ message: error.message }],
   };
   response.status(statusCode).send(errorResponse);

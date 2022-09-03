@@ -4,5 +4,4 @@ export {
   HttpResponse,
   HttpSuccessResponse,
   HttpErrorResponse,
-  ResponseStatusMessage,
 } from "./http-response";

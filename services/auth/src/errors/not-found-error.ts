@@ -7,7 +7,6 @@ export default class NotFoundError extends HttpError {
 
   toHttpErrorResponse(): HttpErrorResponse {
     return {
-      status: "not-found",
       errors: [{ message: this.message ?? "Resource not found" }],
     };
   }

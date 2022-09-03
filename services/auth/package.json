@@ -5,10 +5,12 @@
   "main": "index.js",
   "scripts": {
     "start": "ts-node-dev --poll src/index.ts",
-    "test": "jest --no-cache"
+    "test": "jest --silent",
+    "tw": "jest --silent --watch",
+    "ci-test": "jest"
   },
   "keywords": [],
-  "author": "",
+  "author": "Sita Bérété",
   "license": "ISC",
   "dependencies": {
     "@types/cookie-session": "^2.0.44",

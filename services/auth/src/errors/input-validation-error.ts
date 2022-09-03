@@ -3,7 +3,7 @@ import HttpError from "./http-error";
 import { StatusCodes } from "http-status-codes";
 import { ValidationError } from "express-validator";
 
-export default class RequestValidationError extends HttpError {
+export default class InputValidationError extends HttpError {
   readonly statusCode = StatusCodes.BAD_REQUEST;
 
   constructor(
@@ -15,7 +15,7 @@ export default class RequestValidationError extends HttpError {
   }
 
   toHttpErrorResponse = (): HttpErrorResponse => {
-    return { status: "invalid-input", errors: this.errors };
+    return { errors: this.errors };
   };
 
   private get errors() {

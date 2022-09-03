@@ -1,4 +1,5 @@
 import { body } from "express-validator";
+import {capitalizeFirstLetter} from "./string-utils";
 
 export const emailValidator = () => {
   return body("email").isEmail().withMessage("Invalid email");
