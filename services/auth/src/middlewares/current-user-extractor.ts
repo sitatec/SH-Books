@@ -22,11 +22,11 @@ export const currentUserExtractor = (
 ) => {
   const token = request.session?.jwt;
   if(!token){
-    next();
+    return next();
   }
   try {
     const userData = jwt.verify(token, process.env.JWT_KEY!) as UserType;
-    request.currentUser = userData || null; // Prevent undefined
+    request.currentUser = userData;
   } catch (error) {
     console.error(error);
   }

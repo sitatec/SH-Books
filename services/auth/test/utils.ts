@@ -38,11 +38,12 @@ declare global {
   }
 }
 
-export const signup = (user: UserType) => {
-  return supertest(app)
+export const signup = async (user: UserType) => {
+  const response = await supertest(app)
     .post("/api/users/signup/")
     .send(user)
     .expect(StatusCodes.CREATED);
+  return response.get("Set-Cookie");
 };
 
 export const cleanDB = async () => {
