@@ -3,7 +3,7 @@ FROM node:16-alpine
 WORKDIR /usr/app
 
 COPY package.json .
-RUN npm i
+RUN npm i --only=prod
 COPY . .
 
 CMD ["npm", "start"]
