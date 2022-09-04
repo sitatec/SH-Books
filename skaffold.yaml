@@ -19,3 +19,11 @@ build:
         manual:
           - dest: .
             src: src/**/*.ts
+    - image: beretedocker/shbooks/frontend
+      context: frontend
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - dest: .
+            src: /**/*.ts

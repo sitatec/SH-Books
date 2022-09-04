@@ -17,3 +17,10 @@ spec:
                 name: auth-cluster-ip
                 port:
                   name: auth-port
+          - path: /?(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: frontend-cluster-ip
+                port:
+                  name: frontend-port

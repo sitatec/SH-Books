@@ -58,7 +58,7 @@ spec:
     spec: 
       containers:
         - name: auth-db
-          image: mongo
+          image: mongo:6.0.1
           # The app is not meant to be published so let allocate limited resources to reduce Google Cloud cost during dev/test
           resources:
             requests:
