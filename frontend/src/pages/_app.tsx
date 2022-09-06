@@ -1,15 +1,23 @@
+import { createTheme, ThemeProvider } from "@mui/material";
 import { AppProps } from "next/app";
 import Head from "next/head";
 import "../styles/global.css";
 
 const SHBooksApp = ({ Component, pageProps }: AppProps) => {
+  const customTheme = createTheme({
+    shape: {
+      borderRadius: 8,
+    },
+  });
   return (
-    <div>
-      <Head>
-        <meta name="viewport" content="initial-scale=1, width=device-width" />
-      </Head>
-      <Component {...pageProps}/>
-    </div>
+    <ThemeProvider theme={customTheme}>
+      <div>
+        <Head>
+          <meta name="viewport" content="initial-scale=1, width=device-width" />
+        </Head>
+        <Component {...pageProps} />
+      </div>
+    </ThemeProvider>
   );
 };
 
