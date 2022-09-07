@@ -1,5 +1,4 @@
 import {
-  Box,
   Button,
   Grid,
   TextField,
@@ -7,28 +6,20 @@ import {
   useTheme,
 } from "@mui/material";
 import { NextPage } from "next";
-import Image from "next/image";
-import IllustrationImage from "../../../public/images/signup-bg.png";
-import GoogleLogo from "../../../public/images/google_logo.png";
+import IllustrationImage from "../../../public/images/signin-bg.png";
 import Link from "next/link";
 import AuthLayout from "../../components/AuthLayout";
 import GoogleSignInButton from "../../components/buttons/GoogleSignInButton";
 import PasswordField from "../../components/inputs/PasswordField";
 
-const SignUp: NextPage = () => {
+const SignIn: NextPage = () => {
   const theme = useTheme();
   return (
     <AuthLayout
-      title="Welcome"
-      subtitle="Sign up to sell and buy the best second hand books"
+      title="Hello Again"
+      subtitle="Sign in to unlock all SH Books' features"
       illustrationImage={IllustrationImage}
     >
-      <Grid item xs={12} sm={6}>
-        <TextField fullWidth label="First name" />
-      </Grid>
-      <Grid item xs={12} sm={6}>
-        <TextField fullWidth label="Last name" />
-      </Grid>
       <Grid item xs={12}>
         <TextField fullWidth label="Email" type="email" />
       </Grid>
@@ -37,7 +28,7 @@ const SignUp: NextPage = () => {
       </Grid>
       <Grid item xs={12} mt={2}>
         <Button variant="contained" fullWidth style={{ padding: 12 }}>
-          Sign up
+          Sign in
         </Button>
       </Grid>
       <Grid item xs={12}>
@@ -45,9 +36,9 @@ const SignUp: NextPage = () => {
       </Grid>
       <Grid item xs={12}>
         <Typography variant="subtitle1" textAlign="center">
-          Already have an account?{" "}
-          <Link href="/auth/signin">
-            <a style={{ color: theme.palette.primary.main }}>Sign In</a>
+          {"Don't have an account yet? "}
+          <Link href="/auth/signup">
+            <a style={{ color: theme.palette.primary.dark }}>Sign Up</a>
           </Link>
         </Typography>
       </Grid>
@@ -55,4 +46,4 @@ const SignUp: NextPage = () => {
   );
 };
 
-export default SignUp;
+export default SignIn;
