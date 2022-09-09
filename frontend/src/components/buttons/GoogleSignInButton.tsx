@@ -1,7 +1,7 @@
 import { Button, Box, ButtonProps } from "@mui/material";
 import Image from "next/image";
 import { FC } from "react";
-import GoogleLogo from "../../../public/images/google_logo.png";
+import GoogleLogo from "../../../images/google_logo.png";
 
 const GoogleSignInButton: FC<ButtonProps> = (props) => {
   return (

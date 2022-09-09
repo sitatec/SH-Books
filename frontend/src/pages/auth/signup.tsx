@@ -1,5 +1,4 @@
 import {
-  Box,
   Button,
   Grid,
   TextField,
@@ -7,9 +6,7 @@ import {
   useTheme,
 } from "@mui/material";
 import { NextPage } from "next";
-import Image from "next/image";
-import IllustrationImage from "../../../public/images/signup-bg.png";
-import GoogleLogo from "../../../public/images/google_logo.png";
+import IllustrationImage from "../../../images/signup-bg.png";
 import Link from "next/link";
 import AuthLayout from "../../components/AuthLayout";
 import GoogleSignInButton from "../../components/buttons/GoogleSignInButton";

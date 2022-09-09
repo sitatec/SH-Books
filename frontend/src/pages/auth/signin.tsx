@@ -6,7 +6,7 @@ import {
   useTheme,
 } from "@mui/material";
 import { NextPage } from "next";
-import IllustrationImage from "../../../public/images/signin-bg.png";
+import IllustrationImage from "../../../images/signin-bg.png";
 import Link from "next/link";
 import AuthLayout from "../../components/AuthLayout";
 import GoogleSignInButton from "../../components/buttons/GoogleSignInButton";

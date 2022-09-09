@@ -1,7 +1,7 @@
 import { Box, Container, Grid, Typography, useMediaQuery, useTheme } from "@mui/material";
 import { NextPage } from "next";
 import Image, { StaticImageData } from "next/image";
-import Logo from "../../public/images/logo.png";
+import Logo from "../../images/logo.png";
 
 export interface AuthLayoutProps {
   title: string;
@@ -44,7 +44,7 @@ const AuthLayout: NextPage<AuthLayoutProps> = ({
           />
         </Box>
       </Grid>
-      <Grid xs lg={6} container alignItems="center" style={{ height: "100vh" }}>
+      <Grid item xs lg={6} container alignItems="center" style={{ height: "100vh" }}>
         <Container maxWidth="sm">
           <Grid container spacing={3} px={{ md: 5 }}>
             <Grid
