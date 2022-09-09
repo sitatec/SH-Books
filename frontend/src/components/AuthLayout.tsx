@@ -32,7 +32,7 @@ const AuthLayout: NextPage<AuthLayoutProps> = ({
           height: "100vh",
           backgroundColor:
             illustrationBackgroundColor || theme.palette.primary.main,
-          padding: 50,
+          padding: 40,
         }}
       >
         <Box position="relative" height="100%">
