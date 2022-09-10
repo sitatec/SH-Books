@@ -26,4 +26,6 @@ build:
       sync:
         manual:
           - dest: .
-            src: /**/*.ts
+            src: src/**/*.ts
+          - dest: .
+            src: src/**/*.tsx
