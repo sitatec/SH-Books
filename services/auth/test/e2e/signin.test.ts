@@ -13,7 +13,7 @@ beforeAll(() => signup(user));
 
 it("Should successfully sign in user", async () => {
   const response = await supertest(app)
-    .get("/api/users/signin/")
+    .post("/api/users/signin/")
     .send(user)
     .expect(StatusCodes.OK);
 

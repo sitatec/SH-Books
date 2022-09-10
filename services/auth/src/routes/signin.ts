@@ -8,7 +8,7 @@ import { emailValidator, ensureNotEmpty } from "../utils/input-validators";
 
 const router = Router();
 
-router.get(
+router.post(
   "/api/users/signin/",
   emailValidator(),
   ensureNotEmpty("email"),
