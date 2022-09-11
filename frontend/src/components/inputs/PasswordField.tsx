@@ -13,7 +13,7 @@ export type PasswordFieldProps = TextFieldProps & {
 };
 
 const PasswordField = React.forwardRef<HTMLInputElement, PasswordFieldProps>(
-  (props, ref) => {
+  function PasswordField(props, ref) {
     const [isPasswordVisible, setPasswordVisible] = useState(false);
 
     const onShowPasswordChanged = (_: any, checked: boolean) => {
@@ -38,7 +38,5 @@ const PasswordField = React.forwardRef<HTMLInputElement, PasswordFieldProps>(
     );
   }
 );
-
-PasswordField.displayName = "PasswordField";
 
 export default PasswordField;

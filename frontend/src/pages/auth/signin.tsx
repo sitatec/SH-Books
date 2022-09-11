@@ -2,7 +2,7 @@ import { Button, Grid, TextField, Typography, useTheme } from "@mui/material";
 import { NextPage } from "next";
 import IllustrationImage from "../../../images/signin-bg.png";
 import Link from "next/link";
-import AuthLayout from "../../components/AuthLayout";
+import AuthLayout from "../../components/layouts/AuthLayout";
 import GoogleSignInButton from "../../components/buttons/GoogleSignInButton";
 import PasswordField from "../../components/inputs/PasswordField";
 import { AuthService, SignInData } from "../../services/auth-service";
