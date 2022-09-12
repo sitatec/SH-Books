@@ -7,7 +7,6 @@ import {
   ListItemIcon,
   ListItemText,
   Container,
-  Toolbar,
   IconButton,
   Button,
   Drawer,
@@ -26,56 +25,38 @@ import User from "../models/user";
 import DefaultUserPicture from "../../images/default-user.png";
 import { UserContext } from "../pages/_app";
 import { useRouter } from "next/router";
+import SignOutButton from "./buttons/SignOutButton";
 
-const navItems = [
+interface NavItem {
+  title: string;
+  path: string;
+}
+
+const navItems: NavItem[] = [
   { title: "My Purchases", path: "/my-purchases" },
   { title: "My Sales", path: "/my-sales" },
+  { title: "Post", path: "/post" },
 ];
 
-const extendedNaveItems = [
+const extendedNaveItems: NavItem[] = [
   { title: "My Profile", path: "/my-profile" },
   { title: "Account Settings", path: "/account-settings" },
 ];
 
+// TODO refactor: extract css && improve readability
 const ShbAppBar: React.FC = React.memo(function ShbAppBar() {
   const [mobileOpen, setMobileOpen] = useState(false);
-  const currentUser = useContext(UserContext);
-  const router = useRouter();
-
-  console.log(router.pathname);
+  const { currentUser } = useContext(UserContext);
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
 
-  const drawer = (
-    <Box onClick={handleDrawerToggle}>
-      <Typography variant="h6" sx={{ m: 2 }}>
-        SHBOOKS
-      </Typography>
-      <Divider />
-      <List>
-        {navItems.map((item, index) => (
-          <Link key={index} href={item.path}>
-            <a style={{ color: colors.grey[800] }}>
-              <ListItem>
-                <ListItemIcon>
-                  <Home />
-                </ListItemIcon>
-                <ListItemText primary={item.title} />
-              </ListItem>
-            </a>
-          </Link>
-        ))}
-      </List>
-    </Box>
-  );
-
   return (
     <>
       <AppBar component="nav" variant="elevation" color="transparent">
         <Container>
-          <Toolbar variant="dense" disableGutters>
+          <Box display="flex" alignItems="center">
             <Box sx={{ flexGrow: 1, display: { sm: "none" } }}>
               <IconButton
                 color="inherit"
@@ -86,7 +67,12 @@ const ShbAppBar: React.FC = React.memo(function ShbAppBar() {
                 <MenuIcon />
               </IconButton>
             </Box>
-            <Box sx={{ flexGrow: 1, display: { xs: "none", sm: "flex" } }}>
+            <Box
+              sx={{
+                flexGrow: 1,
+                display: { xs: "none", sm: "flex", alignItems: "center" },
+              }}
+            >
               <Link href="/">
                 <a style={{ display: "inherit" }}>
                   <Image
@@ -106,43 +92,12 @@ const ShbAppBar: React.FC = React.memo(function ShbAppBar() {
                 </a>
               </Link>
             </Box>
-            <Box sx={{ display: { xs: "none", sm: "block" } }}>
-              {navItems.map((item, index) => (
-                <Button
-                  key={index}
-                  sx={{
-                    textTransform: "none",
-                    fontWeight: "400",
-                    fontSize: 15,
-                    "&:hover": { backgroundColor: colors.blue[50] },
-                    color: "black",
-                    borderBottom: "2px solid",
-                    borderBottomColor: router.pathname == item.path ? "primary.main" : "transparent"
-                  }}
-                >
-                  <Link href={item.path}>
-                    <a style={{ color: colors.grey[800] }}>{item.title}</a>
-                  </Link>
-                </Button>
-              ))}
-            </Box>
-            <Button
-              sx={{
-                textTransform: "none",
-                fontWeight: "400",
-                fontSize: 15,
-                "&:hover": { backgroundColor: colors.blue[50] },
-                color: "black",
-                borderBottom: "2px solid",
-                borderBottomColor: router.pathname === "/post" ? "primary.main" : "transparent"
-              }}
-            >
-              <Link href="/post">
-                <a style={{ color: colors.grey[800] }}>{"Post"}</a>
-              </Link>
-            </Button>
-            <AuthMenu currentUser={currentUser} />
-          </Toolbar>
+            {currentUser ? (
+              <AppBarMenu currentUser={currentUser} />
+            ) : (
+              <AuthMenu />
+            )}
+          </Box>
         </Container>
       </AppBar>
       <Box component="nav">
@@ -151,7 +106,7 @@ const ShbAppBar: React.FC = React.memo(function ShbAppBar() {
           open={mobileOpen}
           onClose={handleDrawerToggle}
           ModalProps={{
-            // Improve for SEO and open performance on mobile.
+            // Improve SEO and open performance on mobile.
             keepMounted: true,
           }}
           sx={{
@@ -162,25 +117,68 @@ const ShbAppBar: React.FC = React.memo(function ShbAppBar() {
             },
           }}
         >
-          {drawer}
+          <Typography variant="h6" sx={{ m: 2 }}>
+            SHBOOKS
+          </Typography>
+          <Divider />
+          <List>
+            {navItems.map((item, index) => (
+              <Link key={index} href={item.path}>
+                <a style={{ color: colors.grey[800] }}>
+                  <ListItem>
+                    <ListItemIcon>
+                      <Home />
+                    </ListItemIcon>
+                    <ListItemText primary={item.title} />
+                  </ListItem>
+                </a>
+              </Link>
+            ))}
+          </List>
         </Drawer>
       </Box>
     </>
   );
 });
 
-const AuthMenu: React.FC<{ currentUser: User | null }> = ({ currentUser }) => {
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const open = Boolean(anchorEl);
+const AppBarMenu: React.FC<{ currentUser?: User }> = ({ currentUser }) => {
+  const router = useRouter();
+  const [anchorElement, setAnchorElement] = useState<null | HTMLElement>(null);
+  const open = Boolean(anchorElement);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
+    setAnchorElement(event.currentTarget);
   };
   const handleClose = () => {
-    setAnchorEl(null);
+    setAnchorElement(null);
   };
 
   return (
     <>
+      <Box sx={{ display: { xs: "none", sm: "block" } }}>
+        {navItems.map((item, index) => (
+          <Button
+            key={index}
+            sx={{
+              py: 1.3,
+              borderRadius: 0,
+              textTransform: "none",
+              fontWeight: "400",
+              fontSize: 15,
+              "&:hover": {
+                backgroundColor: colors.blue[50],
+              },
+              color: "black",
+              borderBottom: "2px solid",
+              borderBottomColor:
+                router.pathname == item.path ? "primary.main" : "transparent",
+            }}
+          >
+            <Link href={item.path}>
+              <a style={{ color: colors.grey[800] }}>{item.title}</a>
+            </Link>
+          </Button>
+        ))}
+      </Box>
       <Button
         id="basic-button"
         aria-controls={open ? "basic-menu" : undefined}
@@ -195,7 +193,7 @@ const AuthMenu: React.FC<{ currentUser: User | null }> = ({ currentUser }) => {
       </Button>
       <Menu
         id="basic-menu"
-        anchorEl={anchorEl}
+        anchorEl={anchorElement}
         open={open}
         onClose={handleClose}
         MenuListProps={{
@@ -209,9 +207,28 @@ const AuthMenu: React.FC<{ currentUser: User | null }> = ({ currentUser }) => {
             </Link>
           </MenuItem>
         ))}
+        <SignOutButton/>
       </Menu>
     </>
   );
 };
+
+const AuthMenu = React.memo(function AuthMenu() {
+  return (
+    <Box sx={{ py: 1.2 }}>
+      <Button sx={{ textTransform: "none" }}>
+        <Link href="/auth/signin">
+          <a style={{ color: colors.blue[700] }}>Sign In</a>
+        </Link>
+      </Button>
+      /
+      <Button sx={{ textTransform: "none" }}>
+        <Link href="/auth/signin">
+          <a style={{ color: colors.blue[700] }}>Sign Up</a>
+        </Link>
+      </Button>
+    </Box>
+  );
+});
 
 export default ShbAppBar;

@@ -11,8 +11,10 @@ import axios, { AxiosRequestConfig } from "axios";
 export class HttpClient {
   private static get config(): AxiosRequestConfig {
     return {
-      // On the browser we will have '/', on server side HOST value (HOST will be defined in Kubernetes configs)
-      baseURL: process.env.HOST || "/",
+      // On the browser we will have undefined it will use by default: '/', 
+      // on server side HOST value (BACKEND_HOST will be defined in Kubernetes configs),
+      // since we don't have domain name.
+      baseURL: process.env.BACKEND_HOST,
     };
   }
 

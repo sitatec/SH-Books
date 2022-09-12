@@ -11,11 +11,16 @@ import { HttpClient } from "../../services/http-client";
 import { object, string } from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useContext } from "react";
+import { UserContext } from "../_app";
+import {AuthPagesProps,  getAuthPageServerSideProps } from "./auth-pages-common";
 
 const schema = object({
   firstName: string().required("Please enter your first name"),
   lastName: string().required("Please enter your last name"),
-  email: string().required("Please enter your email address").email("Invalid email"),
+  email: string()
+    .required("Please enter your email address")
+    .email("Invalid email"),
   password: string()
     .required("Please enter your password")
     .matches(
@@ -24,8 +29,11 @@ const schema = object({
     ),
 });
 
-const SignUp: NextPage = () => {
+const SignUp: NextPage<AuthPagesProps> = ({ redirectRoute }) => {
   const theme = useTheme();
+
+  // TODO create a custom hook to share below logic with Between Sign-up and Sign-in pages
+
   const {
     register,
     handleSubmit,
@@ -34,12 +42,17 @@ const SignUp: NextPage = () => {
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = (formData: SignUpData) => {
+  const { currentUser, setCurrentUser } = useContext(UserContext);
+
+  if (currentUser) {
+    Router.push(redirectRoute);
+  }
+
+  const onSubmit = async (formData: SignUpData) => {
     try {
       console.log("Form data befor submit", formData);
-      AuthService.instance.signUp(formData);
-      // TODO handle data: set user in a global state
-      Router.push("/");
+      const response = await AuthService.instance.signUp(formData);
+      setCurrentUser(response.data);
     } catch (error) {
       console.error(error);
       if (HttpClient.isHttpError(error)) {
@@ -114,5 +127,7 @@ const SignUp: NextPage = () => {
     </AuthLayout>
   );
 };
+
+export const getServerSideProps = getAuthPageServerSideProps;
 
 export default SignUp;

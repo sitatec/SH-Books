@@ -1,5 +1,5 @@
 import { Button, Grid, TextField, Typography, useTheme } from "@mui/material";
-import { NextPage } from "next";
+import { GetServerSideProps, NextPage } from "next";
 import IllustrationImage from "../../../images/signin-bg.png";
 import Link from "next/link";
 import AuthLayout from "../../components/layouts/AuthLayout";
@@ -11,9 +11,14 @@ import { HttpClient } from "../../services/http-client";
 import { object, string } from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useContext } from "react";
+import { UserContext } from "../_app";
+import {AuthPagesProps,  getAuthPageServerSideProps } from "./auth-pages-common";
 
 const schema = object({
-  email: string().required("Please enter your email address").email("Invalid email"),
+  email: string()
+    .required("Please enter your email address")
+    .email("Invalid email"),
   password: string()
     .required("Please enter your password")
     .matches(
@@ -22,8 +27,10 @@ const schema = object({
     ),
 });
 
-const SignIn: NextPage = () => {
+const SignIn: NextPage<AuthPagesProps> = ({ redirectRoute }) => {
   const theme = useTheme();
+  // TODO create a custom hook to share below logic with Between Sign-up and Sign-in pages
+  
   const {
     register,
     handleSubmit,
@@ -31,23 +38,23 @@ const SignIn: NextPage = () => {
   } = useForm<SignInData>({
     resolver: yupResolver(schema),
   });
+  const { currentUser, setCurrentUser } = useContext(UserContext);
 
+  if (currentUser) {
+    Router.push(redirectRoute);
+  }
 
   const onSubmit = async (formData: SignInData) => {
     try {
-      console.log("Form data befor submit", formData);
-     await AuthService.instance.signIn(formData);
-      // TODO handle data: set user in a global state
-      // Router.push("/");
+      const response = await AuthService.instance.signIn(formData);
+      setCurrentUser(response.data);
     } catch (error) {
-      console.error(error);
+      console.log(error);
       if (HttpClient.isHttpError(error)) {
-        console.log(error);
         // setErrors(error?.response?.data?.errors);
       }
     }
   };
-
 
   return (
     <AuthLayout
@@ -73,7 +80,12 @@ const SignIn: NextPage = () => {
         />
       </Grid>
       <Grid item xs={12} mt={2}>
-        <Button variant="contained" fullWidth style={{ padding: 12 }} onClick={handleSubmit(onSubmit)}>
+        <Button
+          variant="contained"
+          fullWidth
+          style={{ padding: 12 }}
+          onClick={handleSubmit(onSubmit)}
+        >
           Sign in
         </Button>
       </Grid>
@@ -91,5 +103,7 @@ const SignIn: NextPage = () => {
     </AuthLayout>
   );
 };
+
+export const getServerSideProps = getAuthPageServerSideProps;
 
 export default SignIn;
