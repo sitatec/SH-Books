@@ -7,7 +7,7 @@ import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import MainLayout from "../components/layouts/MainLayout";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import User from "../models/user";
 import { AuthService } from "../services/auth-service";
 import { HttpHeaders } from "../services/http-client";
@@ -36,7 +36,9 @@ const SHBooksApp = ({
   router,
   currentUser,
 }: AppProps & Props) => {
-  const [loggedInUser, setLoggedInUser] = useState(currentUser);
+  const {currentUser: userFromContext} = useContext(UserContext);
+  const [loggedInUser, setLoggedInUser] = useState(currentUser || userFromContext);
+
   let pageComponent = <Component {...pageProps} />;
   if (!router.asPath.startsWith("/auth/")) {
     pageComponent = <MainLayout>{pageComponent}</MainLayout>;
@@ -59,8 +61,6 @@ const SHBooksApp = ({
 };
 
 SHBooksApp.getInitialProps = async (context: AppContext) => {
-  // console.log(process.env.BACKEND_HOST);
-  // console.log(process.env);
   try {
     const response = await AuthService.instance.currentUser(
       context.ctx?.req?.headers as HttpHeaders
@@ -71,7 +71,7 @@ SHBooksApp.getInitialProps = async (context: AppContext) => {
       ...appProps,
     };
   } catch (error) {
-    // console.error("Getting App initial props failed", error);
+    console.error("Getting App initial props failed", error);
     return {
       currentUser: null,
     };
