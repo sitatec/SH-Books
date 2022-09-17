@@ -3,7 +3,7 @@ import HttpError from "../errors/http-error";
 import { StatusCodes } from "http-status-codes";
 import { HttpErrorResponse } from "../types";
 
-const errorHandler = (
+export const errorHandler = (
   error: Error,
   _: Request,
   response: Response,
@@ -20,5 +20,3 @@ const errorHandler = (
   };
   response.status(statusCode).send(errorResponse);
 };
-
-export default errorHandler;

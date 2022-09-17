@@ -1,13 +1,13 @@
 import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
-import User from "../models/user";
+import { User } from "../models/user";
 
 declare global {
-   namespace Express {
+  namespace Express {
     interface Request {
       currentUser?: User;
     }
-   }
+  }
 }
 
 /**
@@ -21,7 +21,7 @@ export const currentUserExtractor = (
   next: NextFunction
 ) => {
   const token = request.session?.jwt;
-  if(!token){
+  if (!token) {
     return next();
   }
   try {
