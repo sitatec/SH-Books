@@ -1,10 +1,10 @@
 import { Router } from "express";
-import BadRequestError from "../errors/bad-request-error";
-import { requestValidator } from "../middlewares/request-validator";
+import { BadRequestError } from "@shbooks/common";
+import { requestValidator } from "@shbooks/common";
 import User from "../models/user";
 import { setUserJWTCookie } from "../security/jwt-cookie";
-import {verifyPassword} from "../security/password-hashing";
-import { emailValidator, ensureNotEmpty } from "../utils/input-validators";
+import { verifyPassword } from "../security/password-hashing";
+import { emailValidator, ensureNotEmpty } from "@shbooks/common";
 
 const router = Router();
 
@@ -17,7 +17,7 @@ router.post(
     const { email, password } = request.body;
     const user = await User.findOne({ email });
     const isValidPassword = () => verifyPassword(password, user!.password);
-    if (!user || !await isValidPassword()) {
+    if (!user || !(await isValidPassword())) {
       throw new BadRequestError("Invalid credentials");
     }
     setUserJWTCookie(request, user);

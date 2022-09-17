@@ -1,7 +1,6 @@
 import Express from "express";
 import "express-async-errors";
-import NotFoundError from "./errors/not-found-error";
-import errorHandler from "./middlewares/error-handler";
+import {NotFoundError, errorHandler} from "@shbooks/common";
 import cookieSession from "cookie-session";
 import {
   currentUserRouter,

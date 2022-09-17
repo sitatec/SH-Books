@@ -1,11 +1,6 @@
 import { Document, Model, Schema, model, SchemaOptions } from "mongoose";
-import { clearObjectOwnProperties } from "../../../auth/src/utils/object_utils";
 import { hashPassword } from "../../../auth/src/security/password-hashing";
-
-export interface UserType {
-  email: string;
-  password: string;
-}
+import { User as UserType, clearObjectOwnProperties } from "@shbooks/common";
 
 export interface UserDocument extends Document, UserType {}
 

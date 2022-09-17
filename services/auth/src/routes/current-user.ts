@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { currentUserExtractor } from "../middlewares/current-user-extractor";
+import { currentUserExtractor } from "@shbooks/common";
 
 const router = Router();
 

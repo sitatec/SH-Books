@@ -1,12 +1,10 @@
 import { Router, Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
-import BadRequestError from "../errors/bad-request-error";
+import { BadRequestError } from "@shbooks/common";
 import User from "../models/user";
-import {
-  emailValidator,
-  strongPasswordValidator,
-} from "../utils/input-validators";
-import { requestValidator } from "../middlewares/request-validator";
+import { strongPasswordValidator } from "../utils/input-validators";
+import { emailValidator } from "@shbooks/common";
+import { requestValidator } from "@shbooks/common";
 import { setUserJWTCookie } from "../security/jwt-cookie";
 
 const router = Router();
@@ -27,6 +25,5 @@ router.post(
     response.status(StatusCodes.CREATED).send(createdUser);
   }
 );
-
 
 export default router;
