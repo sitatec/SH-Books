@@ -1,17 +1,21 @@
 {
   "name": "@shbooks/common",
-  "version": "1.0.3",
+  "version": "1.0.11",
   "description": "",
-  "main": "build/index.js",
-  "types": "build/index.d.ts",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
   "files": [
-    "build/**/*"
+    "lib/**/*"
   ],
   "exports": {
-    ".": "./build/"
+    ".": "./lib/index.js",
+    "./middlewares/*": "./lib/middlewares/*",
+    "./errors/*": "./lib/errors/*",
+    "./models/*": "./lib/models/*",
+    "./types/*": "./lib/types/*"
   },
   "scripts": {
-    "clean": "rm -rf ./build",
+    "clean": "rm -rf ./lib",
     "build": "tsc",
     "cleanBuild": "npm run clean && npm run build",
     "prepublishOnly": "npm run cleanBuild"

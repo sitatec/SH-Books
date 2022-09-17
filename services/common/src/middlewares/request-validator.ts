@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { validationResult } from "express-validator";
-import InputValidationError from "../errors/input-validation-error";
+import { InputValidationError } from "../errors/input-validation-error";
 
 export const requestValidator = (
   request: Request,

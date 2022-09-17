@@ -1,9 +1,9 @@
 import { HttpErrorResponse } from "../types";
-import HttpError from "./http-error";
+import { HttpError } from "./http-error";
 import { StatusCodes } from "http-status-codes";
 import { ValidationError } from "express-validator";
 
-export default class InputValidationError extends HttpError {
+export class InputValidationError extends HttpError {
   readonly statusCode = StatusCodes.BAD_REQUEST;
 
   constructor(

@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import HttpError from "../errors/http-error";
+import { HttpError } from "../errors/http-error";
 import { StatusCodes } from "http-status-codes";
 import { HttpErrorResponse } from "../types";
 
@@ -15,7 +15,7 @@ export const errorHandler = (
   }
   // If the request contains malformed json, the Express.json() middleware will throw an error with status field.
   const statusCode = (error as any).status ?? StatusCodes.INTERNAL_SERVER_ERROR;
-  const errorResponse : HttpErrorResponse = {
+  const errorResponse: HttpErrorResponse = {
     errors: [{ message: error.message }],
   };
   response.status(statusCode).send(errorResponse);
