@@ -1,14 +1,14 @@
 {
   "name": "@shbooks/common",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "",
   "main": "build/index.js",
   "types": "build/index.d.ts",
   "files": [
     "build/**/*"
   ],
-  "exports":{
-    ".": "./build"
+  "exports": {
+    ".": "./build/"
   },
   "scripts": {
     "clean": "rm -rf ./build",
