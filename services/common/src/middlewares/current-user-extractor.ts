@@ -1,11 +1,11 @@
 import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
-import { UserType } from "../models/user";
+import User from "../models/user";
 
 declare global {
    namespace Express {
     interface Request {
-      currentUser?: UserType;
+      currentUser?: User;
     }
    }
 }
@@ -25,7 +25,7 @@ export const currentUserExtractor = (
     return next();
   }
   try {
-    const userData = jwt.verify(token, process.env.JWT_KEY!) as UserType;
+    const userData = jwt.verify(token, process.env.JWT_KEY!) as User;
     request.currentUser = userData;
   } catch (error) {
     console.error(error);
