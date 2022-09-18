@@ -1,12 +1,13 @@
 import { connect } from "mongoose";
-import app from './app';
+import app from "./app";
+import { ensureJwtKeyEnvVariableSet } from "@shbooks/common";
 
 // TODO use appropriated log levels in the entire project
 
 const startServer = async () => {
   console.log("Starting server...");
   try {
-    ensureRequiredEnvSet();
+    ensureJwtKeyEnvVariableSet();
     console.log("Connecting to mongo db...");
     await connect("mongodb://auth-db-cluster-ip:27017/auth");
     console.log("Successfully connected to mongo db.");
@@ -17,11 +18,5 @@ const startServer = async () => {
   }
 };
 
-const ensureRequiredEnvSet = () => {
-  if(!process.env.JWT_KEY){
-    console.error('JWT_KEY environment variable must be define!');
-    process.exit(1);
-  }
-}
 
 startServer();
