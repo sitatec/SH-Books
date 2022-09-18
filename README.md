@@ -1,4 +1,4 @@
-# SHBOOKS (Second Hand Books)
+# SHBOOKS (WIP)
 A second hand books store
 
 ## How to run
@@ -16,4 +16,4 @@ A second hand books store
 
 ## Architecture
 
-![SHBOOKS architecture diagram](https://raw.githubusercontent.com/sitatec/SH-Books/master/docs/diagrams/system-architecture.png)
+![SHBOOKS architecture diagram](https://raw.githubusercontent.com/sitatec/SH-Books/master/docs/diagrams/system-architecture-v2.png)
