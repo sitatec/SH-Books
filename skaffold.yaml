@@ -3,7 +3,7 @@ kind: Config
 deploy:
   kubectl:
     manifests:
-      - ./infra/k8s/*
+      - ./infra/k8s/dev/*
 build:
   local:
     push: false
@@ -19,6 +19,16 @@ build:
         manual:
           - dest: .
             src: src/**/*.ts
+    # - image: us.gcr.io/shbooks/catalog
+    - image: beretedocker/shbooks/catalog
+      context: services/catalog
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - dest: .
+            src: src/**/*.ts
+    # - image: us.gcr.io/shbooks/frontend
     - image: beretedocker/shbooks/frontend
       context: frontend
       docker:

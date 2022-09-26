@@ -7,9 +7,10 @@ const startServer = async () => {
   try {
     ensureJwtKeyEnvVariableSet();
     console.log("Connecting to mongo db...");
-    await connect("mongodb://books-db-service:27017/books");
+    // TODO: put connection url in env variable
+    await connect("mongodb://catalog-db-service:27017/books");
     console.log("Successfully connected to mongo db.");
-    app.listen(443, () => console.log("Server started and listening on 443"));
+    app.listen(8080, () => console.log("Server started and listening on 8080"));
   } catch (error) {
     console.error("Failed to start the server:\n", error);
     process.exit(1);

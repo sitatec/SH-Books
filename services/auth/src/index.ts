@@ -9,7 +9,8 @@ const startServer = async () => {
   try {
     ensureJwtKeyEnvVariableSet();
     console.log("Connecting to mongo db...");
-    await connect("mongodb://auth-db-cluster-ip:27017/auth");
+    // TODO: put connection url in env variable
+    await connect("mongodb://auth-db-service:27017/auth");
     console.log("Successfully connected to mongo db.");
     app.listen(8080, () => console.log("Server started and listening on 8080"));
   } catch (error) {

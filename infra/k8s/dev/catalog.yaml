@@ -1,0 +1,76 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: catalog
+spec:
+  selector:
+    matchLabels:
+      app: catalog
+  template:
+    metadata:
+      labels:
+        app: catalog
+    spec:
+      containers:
+        - name: catalog
+          # image: us.gcr.io/shbooks/catalog
+          image: beretedocker/shbooks/catalog
+          envFrom:
+            - secretRef:
+                name: jwt-secret
+          # resources:
+          #   limits:
+          #     cpu: '2'
+          #     memory: 2Gi
+          #   requests:
+          #     cpu: '1'
+          #     memory: 1Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: catalog-service
+spec:
+  ports:
+    - port: 8080
+      targetPort: 8080
+      name: catalog-port
+      protocol: TCP
+---
+####################### DATABASE #########################
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: catalog-db
+spec:
+  selector:
+    matchLabels:
+      app: catalog-db
+  template:
+    metadata:
+      labels:
+        app: catalog-db
+    spec:
+      containers:
+        - name: catalog-db
+          image: mongo:6.0.1
+          # resources:
+          #   limits:
+          #     cpu: '2'
+          #     memory: 2Gi
+          #   requests:
+          #     cpu: '1'
+          #     memory: 1Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: catalog-db-service
+spec:
+  selector:
+    app: catalog-db
+  ports:
+    - name: catalog-db-port
+      port: 27017
+      targetPort: 27017
+      protocol: TCP

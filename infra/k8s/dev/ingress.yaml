@@ -7,20 +7,27 @@ metadata:
     nginx.ingress.kubernetes.io/use-regex: 'true'
 spec:
   rules:
-    - host: shbooks.com
+    - host: shbooks.com # map this domain to your localhost ip for testing
       http:
         paths:
           - path: /api/users/?(.*)
             pathType: Prefix
             backend:
               service:
-                name: auth-cluster-ip
+                name: auth-service
                 port:
                   name: auth-port
+          - path: /api/catalog/?(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: catalog-service
+                port: 
+                  name: catalog-port
           - path: /?(.*)
             pathType: Prefix
             backend:
               service:
-                name: frontend-cluster-ip
+                name: frontend-service
                 port:
                   name: frontend-port

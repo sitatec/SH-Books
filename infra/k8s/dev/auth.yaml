@@ -3,7 +3,6 @@ kind: Deployment
 metadata:
   name: auth
 spec:
-  replicas: 1
   selector:
     matchLabels:
       app: auth
@@ -20,18 +19,18 @@ spec:
             - secretRef:
                 name: jwt-secret
           # The app is not meant to be published so let allocate limited resources to reduce Google Cloud cost during dev/test
-          resources:
-            requests:
-              cpu: 500m
-              memory: 300Mi
-            limits:
-              cpu: '1'
-              memory: 600Mi
+          # resources:
+          #   requests:
+          #     cpu: 500m
+          #     memory: 300Mi
+          #   limits:
+          #     cpu: '1'
+          #     memory: 600Mi
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: auth-cluster-ip
+  name: auth-service
 spec:
   selector:
     app: auth
@@ -60,18 +59,18 @@ spec:
         - name: auth-db
           image: mongo:6.0.1
           # The app is not meant to be published so let allocate limited resources to reduce Google Cloud cost during dev/test
-          resources:
-            requests:
-              cpu: 300m
-              memory: 300Mi
-            limits:
-              cpu: '1'
-              memory: 1Gi
+          # resources:
+          #   requests:
+          #     cpu: 300m
+          #     memory: 300Mi
+          #   limits:
+          #     cpu: '1'
+          #     memory: 1Gi
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: auth-db-cluster-ip
+  name: auth-db-service
 spec:
   selector:
     db: auth-db
