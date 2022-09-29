@@ -1,10 +1,10 @@
 import { StatusCodes } from "http-status-codes";
 import supertest from "supertest";
 import app from "../../src/app";
-import { UserType } from "../../src/models/user";
+import { User } from "@shbooks/common";
 import { signup } from "../utils";
 
-const user: UserType = {
+const user: User = {
   email: "test@test.com",
   password: "flsj34B.",
 };

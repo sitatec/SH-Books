@@ -1,8 +1,8 @@
 import { StatusCodes } from "http-status-codes";
 import supertest from "supertest";
 import app from "../../src/app";
-import User, { UserType } from "../../src/models/user";
-import { cleanDB } from "../utils";
+import User from "../../src/models/user";
+import {cleanDB, User as UserType } from "@shbooks/common";
 
 beforeEach(cleanDB);
 
@@ -116,15 +116,15 @@ it("Should return a [bad request] response when no data is sent", async () => {
 });
 
 it("Should not allow signing up twice with the same email", async () => {
-  const signup = (expectedStatusCode: number) =>{
+  const signup = (expectedStatusCode: number) => {
     return supertest(app)
-    .post("/api/users/signup/")
-    .send({
-      email: "email@test.com",
-      password: "lsfj35SG."
-    })
-    .expect(expectedStatusCode);
-  }
+      .post("/api/users/signup/")
+      .send({
+        email: "email@test.com",
+        password: "lsfj35SG.",
+      })
+      .expect(expectedStatusCode);
+  };
 
   await signup(StatusCodes.CREATED);
   await signup(StatusCodes.BAD_REQUEST);
