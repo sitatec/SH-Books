@@ -1,6 +1,7 @@
 export * from './input-validators';
 export * from './object-utils';
 export * from './string-utils';
+export * from './test-utils';
 
 export const ensureJwtKeyEnvVariableSet = () => {
   if(!process.env.JWT_KEY){
