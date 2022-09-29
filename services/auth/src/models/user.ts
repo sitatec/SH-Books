@@ -21,6 +21,10 @@ const toJson: SchemaOptions = {
       clearObjectOwnProperties(returnValue); // remove mongo specific properties and naming conventions
       returnValue.id = document.id;
       returnValue.email = document.email;
+      returnValue.fieldName = document.firstName;
+      returnValue.lastName = document.lastName;
+      returnValue.bio = document.bio;
+      returnValue.profilePictureUrl = document.profilePictureUrl;
     },
   },
 };

@@ -7,6 +7,8 @@ import { signup } from "../utils";
 const user: User = {
   email: "test@test.com",
   password: "flsj34B.",
+  firstName: "first",
+  lastName: "last",
 };
 
 beforeAll(() => signup(user));

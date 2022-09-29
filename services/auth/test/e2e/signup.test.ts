@@ -2,7 +2,7 @@ import { StatusCodes } from "http-status-codes";
 import supertest from "supertest";
 import app from "../../src/app";
 import User from "../../src/models/user";
-import {cleanDB, User as UserType } from "@shbooks/common";
+import { cleanDB, User as UserType } from "@shbooks/common";
 
 beforeEach(cleanDB);
 
@@ -10,6 +10,8 @@ it("Should successfully signup user", async () => {
   const user: UserType = {
     email: "test@test.com",
     password: "flsj34B.",
+    firstName: "first",
+    lastName: "last",
   };
 
   await supertest(app)
@@ -25,6 +27,8 @@ it("Should fail signing up user with invalid email", async () => {
   const user: UserType = {
     email: "testtest.com",
     password: "flsj34B.",
+    firstName: "first",
+    lastName: "last",
   };
 
   const response = await supertest(app)
@@ -45,6 +49,8 @@ it("Should fail signing up user with invalid password", async () => {
   const user: UserType = {
     email: "test@test.com",
     password: "flsj34", // Not strong enough
+    firstName: "first",
+    lastName: "last",
   };
 
   const response = await supertest(app)
@@ -65,6 +71,8 @@ it("Should fail signing up user with invalid password and email", async () => {
   const user: UserType = {
     email: "testtest.com",
     password: "flsj34", // Not strong enough
+    firstName: "first",
+    lastName: "last",
   };
 
   const response = await supertest(app)
@@ -122,10 +130,60 @@ it("Should not allow signing up twice with the same email", async () => {
       .send({
         email: "email@test.com",
         password: "lsfj35SG.",
+        firstName: "first",
+        lastName: "last",
       })
       .expect(expectedStatusCode);
   };
 
   await signup(StatusCodes.CREATED);
   await signup(StatusCodes.BAD_REQUEST);
+});
+
+it("Should not allow empty firstName", async () => {
+  const requests = [
+    supertest(app)
+      .post("/api/users/signup/")
+      .send({
+        email: "email@test.com",
+        password: "lsfj35SG.",
+        firstName: "",
+        lastName: "last",
+      })
+      .expect(StatusCodes.BAD_REQUEST),
+    supertest(app)
+      .post("/api/users/signup/")
+      .send({
+        email: "email@test.com",
+        password: "lsfj35SG.",
+        lastName: "last",
+      })
+      .expect(StatusCodes.BAD_REQUEST),
+  ];
+
+  await Promise.all(requests);
+});
+
+it("Should not allow empty lastName", async () => {
+  const requests = [
+    supertest(app)
+      .post("/api/users/signup/")
+      .send({
+        email: "email@test.com",
+        password: "lsfj35SG.",
+        firstName: "first",
+        lastName: "",
+      })
+      .expect(StatusCodes.BAD_REQUEST),
+    supertest(app)
+      .post("/api/users/signup/")
+      .send({
+        email: "email@test.com",
+        password: "lsfj35SG.",
+        firstName: "first",
+      })
+      .expect(StatusCodes.BAD_REQUEST),
+  ];
+
+  await Promise.all(requests);
 });

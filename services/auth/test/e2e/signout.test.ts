@@ -7,6 +7,8 @@ it("Should clear cookies when user signout", async () => {
   await signup({
     email: "test@test.com",
     password: "flsj34B.",
+    firstName: "first",
+    lastName: "last",
   });
 
   await supertest(app)

@@ -1,12 +1,15 @@
+import { User } from "@shbooks/common";
 import { StatusCodes } from "http-status-codes";
 import supertest from "supertest";
 import app from "../../src/app";
 import { signup } from "../utils";
 
 it("Should return logged in user", async () => {
-  const user = {
+  const user: User = {
     email: "test@test.com",
     password: "flsj34B.",
+    firstName: "first",
+    lastName: "last",
   };
   const cookie = await signup(user);
 
