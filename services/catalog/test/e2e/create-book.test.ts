@@ -1,8 +1,8 @@
 import { StatusCodes } from "http-status-codes";
-import supertest, { Test } from "supertest";
+import supertest from "supertest";
 import app from "../../src/app";
 import { cleanDB, signup, User } from "@shbooks/common";
-import BookCollection, { Book } from "../../src/models/book";
+import BookCollection from "../../src/models/book";
 
 const user: User = {
   id: "id",
@@ -12,12 +12,13 @@ const user: User = {
   lastName: "last",
 };
 
-const book: Book = {
+const book = {
   title: "ttl",
   description: "desc",
   price: 32.0,
   sellerId: "id",
   imageUrl: "url",
+  authorName: "author",
 };
 
 const ensureNoBookCreated = async () => {
@@ -56,6 +57,7 @@ it("Should not allow empty title", async () => {
         price: 32.0,
         sellerId: "id",
         imageUrl: "url",
+        authorName: "author",
       })
       .expect(StatusCodes.BAD_REQUEST),
     authenticatedRequest()
@@ -64,6 +66,7 @@ it("Should not allow empty title", async () => {
         price: 32.0,
         sellerId: "id",
         imageUrl: "url",
+        authorName: "author",
       })
       .expect(StatusCodes.BAD_REQUEST),
     ensureNoBookCreated(),
@@ -81,6 +84,7 @@ it("Should not allow empty description", async () => {
         price: 32.0,
         sellerId: "id",
         imageUrl: "url",
+        authorName: "author",
       })
       .expect(StatusCodes.BAD_REQUEST),
     authenticatedRequest()
@@ -89,6 +93,7 @@ it("Should not allow empty description", async () => {
         price: 32.0,
         sellerId: "id",
         imageUrl: "url",
+        authorName: "author",
       })
       .expect(StatusCodes.BAD_REQUEST),
     ensureNoBookCreated(),
@@ -106,6 +111,7 @@ it("Should not allow empty price", async () => {
         price: 0,
         sellerId: "id",
         imageUrl: "url",
+        authorName: "author",
       })
       .expect(StatusCodes.BAD_REQUEST),
     authenticatedRequest()
@@ -114,6 +120,7 @@ it("Should not allow empty price", async () => {
         description: "desc",
         sellerId: "id",
         imageUrl: "url",
+        authorName: "author",
       })
       .expect(StatusCodes.BAD_REQUEST),
     ensureNoBookCreated(),
@@ -131,6 +138,34 @@ it("Should not allow empty imageUrl", async () => {
         price: 3,
         sellerId: "id",
         imageUrl: "",
+        authorName: "author",
+      })
+      .expect(StatusCodes.BAD_REQUEST),
+    authenticatedRequest()
+      .send({
+        title: "title",
+        description: "desc",
+        sellerId: "id",
+        price: 3,
+        authorName: "author",
+      })
+      .expect(StatusCodes.BAD_REQUEST),
+    ensureNoBookCreated(),
+  ];
+
+  await Promise.all(requests);
+});
+
+it("Should not allow empty authorName", async () => {
+  const requests = [
+    authenticatedRequest()
+      .send({
+        title: "title",
+        description: "desc",
+        price: 3,
+        sellerId: "id",
+        imageUrl: "url",
+        authorName: "",
       })
       .expect(StatusCodes.BAD_REQUEST),
     authenticatedRequest()
@@ -155,6 +190,7 @@ it("Should create a book", async () => {
   expect(response.body).toMatchObject(book);
   expect(response.body.id).toBeTruthy();
   expect(response.body.sellerId).toEqual(user.id);
+  expect(response.body.createdAt).toBeTruthy();
 
   const bookFromDb = await BookCollection.findById(response.body.id);
   expect(bookFromDb).toBeTruthy();

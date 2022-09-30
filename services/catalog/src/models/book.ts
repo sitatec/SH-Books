@@ -4,9 +4,11 @@ import { Document, model, Model, Schema, SchemaOptions } from "mongoose";
 export interface Book {
   title: string;
   description: string;
+  authorName: string;
   price: number;
   imageUrl: string;
   sellerId: string;
+  createdAt: Date;
 }
 
 export interface BookDocument extends Document, Book {}
@@ -22,7 +24,7 @@ const RequiredStringSchema = {
   required: true,
 };
 
-const toJson: SchemaOptions = {
+const schemaOptions: SchemaOptions = {
   toJSON: {
     transform(document: BookDocument, returnValue) {
       clearObjectOwnProperties(returnValue); // remove mongo specific properties and naming conventions
@@ -32,8 +34,11 @@ const toJson: SchemaOptions = {
       returnValue.imageUrl = document.imageUrl;
       returnValue.sellerId = document.sellerId;
       returnValue.price = document.price;
+      returnValue.createdAt = document.createdAt;
+      returnValue.authorName = document.authorName;
     },
   },
+  timestamps: true,
 };
 
 const bookSchema = new Schema(
@@ -42,12 +47,13 @@ const bookSchema = new Schema(
     description: RequiredStringSchema,
     imageUrl: RequiredStringSchema,
     sellerId: RequiredStringSchema,
+    authorName: RequiredStringSchema,
     price: {
       type: Number,
       require: true,
     },
   },
-  toJson
+  schemaOptions
 );
 
 bookSchema.statics.build = (book: Book) => new BookCollection(book);
