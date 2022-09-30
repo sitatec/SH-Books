@@ -2,6 +2,7 @@ import { clearObjectOwnProperties } from "@shbooks/common";
 import { Document, model, Model, Schema, SchemaOptions } from "mongoose";
 
 export interface Book {
+  id: string;
   title: string;
   description: string;
   authorName: string;
@@ -11,7 +12,7 @@ export interface Book {
   createdAt: Date;
 }
 
-export interface BookDocument extends Document, Book {}
+export interface BookDocument extends Document, Omit<Book, 'id'> {}
 
 export interface BookModel extends Model<BookDocument> {
   build(book: Book): BookDocument;
