@@ -7,7 +7,6 @@ export interface UserDocument extends Document, UserType {}
 export interface UserModel extends Model<UserDocument> {
   build(user: UserType): UserDocument;
   insert(user: UserType): Promise<UserDocument>;
-  insert(...user: UserType[]): Promise<UserDocument[]>;
 }
 
 const RequiredStringSchema = {
@@ -38,7 +37,6 @@ const userSchema = new Schema(
 );
 
 userSchema.statics.build = (userData: UserType) => new User(userData);
-userSchema.statics.insert = (...userData: UserType[]) => User.create(userData);
 userSchema.statics.insert = (userData: UserType) => User.create(userData);
 userSchema.pre("save", async function (done) {
   if (this.isModified("password")) {

@@ -38,8 +38,9 @@ declare global {
 
 export const signup = (user: User) => {
   const jwtToken = jwt.sign(user, process.env.JWT_KEY!);
-  const jwtBase64 = Buffer.from(jwtToken).toString('base64');
-  return `session:${jwtBase64}`;
+  const cookie = JSON.stringify({ jwt: jwtToken });
+  const cookieBase64 = Buffer.from(cookie).toString("base64");
+  return `session=${cookieBase64}`;
 };
 
 export const cleanDB = async () => {
