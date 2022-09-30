@@ -2,7 +2,8 @@ import { Document, Model, Schema, model, SchemaOptions } from "mongoose";
 import { hashPassword } from "../security/password-hashing";
 import { User as UserType, clearObjectOwnProperties } from "@shbooks/common";
 
-export interface UserDocument extends Document, UserType {}
+// Omitting UserType's id to prevent conflict with Document's id
+export interface UserDocument extends Document, Omit<UserType, "id"> {}
 
 export interface UserModel extends Model<UserDocument> {
   build(user: UserType): UserDocument;

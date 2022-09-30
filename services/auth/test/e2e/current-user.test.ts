@@ -6,6 +6,7 @@ import { signup } from "../utils";
 
 it("Should return logged in user", async () => {
   const user: User = {
+    id: "id",
     email: "test@test.com",
     password: "flsj34B.",
     firstName: "first",

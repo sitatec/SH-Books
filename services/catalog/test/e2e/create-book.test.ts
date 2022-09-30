@@ -5,6 +5,7 @@ import { cleanDB, signup, User } from "@shbooks/common";
 import BookCollection, { Book } from "../../src/models/book";
 
 const user: User = {
+  id: "id",
   email: "sita@shbooks.com",
   password: "ljfslS4Rfl",
   firstName: "first",
@@ -24,13 +25,10 @@ const ensureNoBookCreated = async () => {
   expect(response).toBeNull();
 };
 
-let authenticatedRequest: Test;
-
-beforeAll(() => {
-  authenticatedRequest = supertest(app)
+const authenticatedRequest = () =>
+  supertest(app)
     .post("/api/books")
     .set("Cookie", [signup(user)]);
-});
 
 beforeEach(cleanDB);
 
@@ -45,13 +43,13 @@ it("Should not allow unauthenticated POST request on the `/api/books` endpoint",
 });
 
 it("Should allow authenticated POST request on the `/api/books` endpoint", async () => {
-  const response = await authenticatedRequest.send();
+  const response = await authenticatedRequest().send();
   expect(response.status).not.toEqual(StatusCodes.UNAUTHORIZED);
 });
 
 it("Should not allow empty title", async () => {
   const requests = [
-    authenticatedRequest
+    authenticatedRequest()
       .send({
         title: "",
         description: "desc",
@@ -60,7 +58,7 @@ it("Should not allow empty title", async () => {
         imageUrl: "url",
       })
       .expect(StatusCodes.BAD_REQUEST),
-    authenticatedRequest
+    authenticatedRequest()
       .send({
         description: "desc",
         price: 32.0,
@@ -76,7 +74,7 @@ it("Should not allow empty title", async () => {
 
 it("Should not allow empty description", async () => {
   const requests = [
-    authenticatedRequest
+    authenticatedRequest()
       .send({
         title: "title",
         description: "",
@@ -85,7 +83,7 @@ it("Should not allow empty description", async () => {
         imageUrl: "url",
       })
       .expect(StatusCodes.BAD_REQUEST),
-    authenticatedRequest
+    authenticatedRequest()
       .send({
         title: "title",
         price: 32.0,
@@ -101,7 +99,7 @@ it("Should not allow empty description", async () => {
 
 it("Should not allow empty price", async () => {
   const requests = [
-    authenticatedRequest
+    authenticatedRequest()
       .send({
         title: "title",
         description: "desc",
@@ -110,7 +108,7 @@ it("Should not allow empty price", async () => {
         imageUrl: "url",
       })
       .expect(StatusCodes.BAD_REQUEST),
-    authenticatedRequest
+    authenticatedRequest()
       .send({
         title: "title",
         description: "desc",
@@ -126,7 +124,7 @@ it("Should not allow empty price", async () => {
 
 it("Should not allow empty imageUrl", async () => {
   const requests = [
-    authenticatedRequest
+    authenticatedRequest()
       .send({
         title: "title",
         description: "desc",
@@ -135,37 +133,12 @@ it("Should not allow empty imageUrl", async () => {
         imageUrl: "",
       })
       .expect(StatusCodes.BAD_REQUEST),
-    authenticatedRequest
+    authenticatedRequest()
       .send({
         title: "title",
         description: "desc",
         sellerId: "id",
         price: 3,
-      })
-      .expect(StatusCodes.BAD_REQUEST),
-    ensureNoBookCreated(),
-  ];
-
-  await Promise.all(requests);
-});
-
-it("Should not allow empty sellerId", async () => {
-  const requests = [
-    authenticatedRequest
-      .send({
-        title: "title",
-        description: "desc",
-        price: 3,
-        sellerId: "",
-        imageUrl: "dsf",
-      })
-      .expect(StatusCodes.BAD_REQUEST),
-    authenticatedRequest
-      .send({
-        title: "title",
-        description: "desc",
-        price: 3,
-        imageUrl: "fsf",
       })
       .expect(StatusCodes.BAD_REQUEST),
     ensureNoBookCreated(),
@@ -175,13 +148,15 @@ it("Should not allow empty sellerId", async () => {
 });
 
 it("Should create a book", async () => {
-  const response = await authenticatedRequest
+  const response = await authenticatedRequest()
     .send(book)
     .expect(StatusCodes.CREATED);
-    
+
   expect(response.body).toMatchObject(book);
   expect(response.body.id).toBeTruthy();
-  
+  expect(response.body.sellerId).toEqual(user.id);
+
   const bookFromDb = await BookCollection.findById(response.body.id);
   expect(bookFromDb).toBeTruthy();
+  expect(bookFromDb?.sellerId).toEqual(user.id);
 });

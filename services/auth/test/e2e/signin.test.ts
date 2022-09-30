@@ -5,6 +5,7 @@ import { User } from "@shbooks/common";
 import { signup } from "../utils";
 
 const user: User = {
+  id: "id",
   email: "test@test.com",
   password: "flsj34B.",
   firstName: "first",

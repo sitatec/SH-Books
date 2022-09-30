@@ -8,6 +8,7 @@ beforeEach(cleanDB);
 
 it("Should successfully signup user", async () => {
   const user: UserType = {
+    id: "id",
     email: "test@test.com",
     password: "flsj34B.",
     firstName: "first",
@@ -25,6 +26,7 @@ it("Should successfully signup user", async () => {
 
 it("Should fail signing up user with invalid email", async () => {
   const user: UserType = {
+    id: "id",
     email: "testtest.com",
     password: "flsj34B.",
     firstName: "first",
@@ -47,6 +49,7 @@ it("Should fail signing up user with invalid email", async () => {
 
 it("Should fail signing up user with invalid password", async () => {
   const user: UserType = {
+    id: "id",
     email: "test@test.com",
     password: "flsj34", // Not strong enough
     firstName: "first",
@@ -69,6 +72,7 @@ it("Should fail signing up user with invalid password", async () => {
 
 it("Should fail signing up user with invalid password and email", async () => {
   const user: UserType = {
+    id: "id",
     email: "testtest.com",
     password: "flsj34", // Not strong enough
     firstName: "first",
