@@ -49,3 +49,6 @@ export const cleanDB = async () => {
     await collection.deleteMany({});
   }
 };
+
+export const generateValidMongoId = () =>
+  new mongoose.Types.ObjectId().toHexString();
