@@ -37,7 +37,7 @@ spec:
       name: catalog-port
       protocol: TCP
 ---
-####################### DATABASE #########################
+####################### DATABASES #########################
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -73,4 +73,41 @@ spec:
     - name: catalog-db-port
       port: 27017
       targetPort: 27017
+      protocol: TCP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: catalog-elasticsearch
+spec:
+  selector:
+    matchLabels:
+      app: catalog-elasticsearch
+  template:
+    metadata:
+      labels:
+        app: catalog-elasticsearch
+    spec:
+      containers:
+      - name: catalog-elasticsearch
+        image: elasticsearch:8.4.2
+        # resources:
+        #   requests:
+        #     memory: 2Gi
+        #     cpu: '4'
+        #   limits:
+        #     memory: 4Gi
+        #     cpu: '8'
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: catalog-es-service
+spec:
+  selector:
+    app: catalog-elasticsearch
+  ports:
+    - port: 9200
+      name: catalog-es-port
+      targetPort: 9200
       protocol: TCP
