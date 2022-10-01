@@ -1,8 +1,9 @@
 import { StatusCodes } from "http-status-codes";
 import supertest from "supertest";
 import app from "../../src/app";
-import { cleanDB, signup, User } from "@shbooks/common";
-import BookCollection from "../../src/models/book";
+import { cleanDB, generateValidMongoId, signup, User } from "@shbooks/common";
+import BookCollection, { Book } from "../../src/models/book";
+import mongoose from "mongoose";
 
 const user: User = {
   id: "id",
@@ -26,25 +27,28 @@ const ensureNoBookCreated = async () => {
   expect(response).toBeNull();
 };
 
-const authenticatedRequest = () =>
+const authenticatedRequest = (
+  bookId: string = generateValidMongoId(),
+  seller: User = user
+) =>
   supertest(app)
-    .post("/api/books")
-    .set("Cookie", [signup(user)]);
+    .put("/api/books/" + bookId)
+    .set("Cookie", [signup(seller)]);
 
 beforeEach(cleanDB);
 
-it("Should listen to POST requests on the `/api/books` endpoint", async () => {
-  const response = await supertest(app).post("/api/books").send();
+it("Should return 404(NOT_FOUND) if the given id doesn't exist", async () => {
+  const response = await authenticatedRequest(generateValidMongoId()).send({});
   expect(response.status).not.toEqual(StatusCodes.NOT_FOUND);
 });
 
-it("Should not allow unauthenticated POST request on the `/api/books` endpoint", async () => {
-  const response = await supertest(app).post("/api/books").send();
+it("Should not allow unauthenticated PUT request on the `/api/books` endpoint", async () => {
+  const response = await supertest(app).put("/api/books/id").send();
   expect(response.status).toEqual(StatusCodes.UNAUTHORIZED);
 });
 
-it("Should allow authenticated POST request on the `/api/books` endpoint", async () => {
-  const response = await authenticatedRequest().send();
+it("Should allow authenticated PUT request on the `/api/books/:id` endpoint", async () => {
+  const response = await authenticatedRequest(generateValidMongoId()).send();
   expect(response.status).not.toEqual(StatusCodes.UNAUTHORIZED);
 });
 
@@ -182,17 +186,28 @@ it("Should not allow empty authorName", async () => {
   await Promise.all(requests);
 });
 
-it("Should create a book", async () => {
-  const response = await authenticatedRequest()
-    .send(book)
-    .expect(StatusCodes.CREATED);
+it("Should fail update an book by a user different than the seller how created it", async () => {
+  const createdBook = await BookCollection.insert(book as Book); // The sellerId of book is the id of the user defined at the to of this file
+  const otherUser = {
+    ...user,
+    id: "other_id", // Changing id
+  };
 
-  expect(response.body).toMatchObject(book);
-  expect(response.body.id).toBeTruthy();
-  expect(response.body.sellerId).toEqual(user.id);
-  expect(response.body.createdAt).toBeTruthy();
+  await authenticatedRequest(createdBook.id, otherUser)
+    .send({ ...book, title: "newTitle" })
+    .expect(StatusCodes.UNAUTHORIZED);
+});
 
-  const bookFromDb = await BookCollection.findById(response.body.id);
-  expect(bookFromDb).toBeTruthy();
-  expect(bookFromDb?.sellerId).toEqual(user.id);
+it("Should update a book", async () => {
+  const createdBook = await BookCollection.insert(book as Book);
+
+  const newBook = { ...book, title: "newTitle", description: "newDescription" };
+
+  await authenticatedRequest(createdBook.id)
+    .send(newBook)
+    .expect(StatusCodes.OK);
+
+  const bookFromDb = await BookCollection.findById(createdBook);
+  expect(bookFromDb?.title).toEqual(newBook.title);
+  expect(bookFromDb?.description).toEqual(newBook.description);
 });

@@ -1,5 +1,5 @@
+import { generateValidMongoId } from "@shbooks/common";
 import { StatusCodes } from "http-status-codes";
-import mongoose from "mongoose";
 import supertest from "supertest";
 import app from "../../src/app";
 import BookCollection, { Book, BookDocument } from "../../src/models/book";
@@ -12,8 +12,6 @@ const book = {
   imageUrl: "url",
   authorName: "author",
 };
-
-const generateValidMongoId = () => new mongoose.Types.ObjectId().toHexString();
 
 let booksInDb: BookDocument[];
 

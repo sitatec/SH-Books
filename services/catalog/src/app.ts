@@ -5,6 +5,7 @@ import cookieSession from "cookie-session";
 import createBookRouter from "./routes/create-book";
 import getBookRouter from "./routes/get-book-by-id";
 import listBooksRouter from "./routes/list-books";
+import updateBookRouter from "./routes/update-book";
 
 const app = Express();
 app.set("trust proxy", true);
@@ -21,6 +22,7 @@ app.use(currentUserExtractor);
 app.use(createBookRouter);
 app.use(getBookRouter);
 app.use(listBooksRouter);
+app.use(updateBookRouter);
 
 app.all("*", () => {
   throw new NotFoundError();
