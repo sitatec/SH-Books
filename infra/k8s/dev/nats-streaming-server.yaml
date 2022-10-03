@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nats-streaming-server
+spec:
+  selector:
+    matchLabels:
+      app: nats-streaming-server
+  template:
+    metadata:
+      labels:
+        app: nats-streaming-server
+    spec:
+      containers:
+      - name: nats-streaming-server
+        image: nats-streaming:0.24.6
+        args: [
+          '-p',
+          '4222',
+          '-m',
+          '8222',
+          '-hbi',
+          '5s',
+          '-hbt',
+          '5s',
+          '-hbf',
+          '2',
+          '-SD',
+          '-cid',
+          'shbooks'
+        ]
+        # resources:
+        #   limits:
+        #     memory: 16Gi
+        #     cpu: '16'
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nats-service
+spec:
+  selector:
+    app: nats-streaming-server
+  ports:
+  - name: nats-server-port
+    port: 4222
+    targetPort: 4222
+    protocol: TCP
+  - name: nats-monitoring-port
+    port: 8222
+    targetPort: 8222
+    protocol: TCP
+
