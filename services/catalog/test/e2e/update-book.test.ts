@@ -1,8 +1,8 @@
 import { StatusCodes } from "http-status-codes";
 import supertest from "supertest";
 import app from "../../src/app";
-import { cleanDB, generateValidMongoId, signup, User } from "@shbooks/common";
-import BookCollection, { Book } from "../../src/models/book";
+import { Book, cleanDB, generateValidMongoId, signup, User } from "@shbooks/common";
+import BookCollection from "../../src/models/book";
 import mongoose from "mongoose";
 
 const user: User = {

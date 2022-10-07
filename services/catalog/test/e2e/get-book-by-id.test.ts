@@ -1,8 +1,8 @@
-import { generateValidMongoId } from "@shbooks/common";
+import { generateValidMongoId, Book } from "@shbooks/common";
 import { StatusCodes } from "http-status-codes";
 import supertest from "supertest";
 import app from "../../src/app";
-import BookCollection, { Book, BookDocument } from "../../src/models/book";
+import BookCollection, { BookDocument } from "../../src/models/book";
 
 const book = {
   title: "ttl",

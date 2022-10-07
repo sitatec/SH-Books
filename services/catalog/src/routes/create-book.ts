@@ -3,10 +3,11 @@ import {
   ensureNotEmpty,
   requestValidator,
   requireAuthentication,
+  Book,
 } from "@shbooks/common";
 import { StatusCodes } from "http-status-codes";
 import { body } from "express-validator";
-import BookCollection, { Book } from "../models/book";
+import BookCollection from "../models/book";
 
 const router = Router();
 
