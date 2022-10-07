@@ -4,3 +4,4 @@ export * from './middlewares';
 export * from './models';
 export * from './utils';
 export * from './events';
+export * from './nats-streaming-client';
