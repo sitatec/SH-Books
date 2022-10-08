@@ -15,6 +15,9 @@ spec:
         - name: auth
           # image: us.gcr.io/shbooks/auth
           image: beretedocker/shbooks/auth
+          env:
+            - name: MONGO_DB_URL
+              value: mongodb://auth-db-service:27017/auth
           envFrom:
             - secretRef:
                 name: jwt-secret

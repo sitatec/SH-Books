@@ -4,8 +4,8 @@ export class NatsClientWrapper {
   private _client?: Stan;
   private static _instance: NatsClientWrapper;
 
-  static get instance(){
-    return this._instance ||= new NatsClientWrapper();
+  static get instance() {
+    return (this._instance ||= new NatsClientWrapper());
   }
 
   get natsClient() {
@@ -18,18 +18,19 @@ export class NatsClientWrapper {
   }
 
   connect(natsClusterId: string, clientId: string, streamingServerUrl: string) {
+    console.log("Connecting to nats streaming server...");
     return new Promise<void>((resolve, reject) => {
       this._client = nats.connect(natsClusterId, clientId, {
         url: streamingServerUrl,
       });
-      this.natsClient.on("connect", (error) => {
-        if (error) {
-          reject(error);
-          console.error("Failed to connect to nats server \n", error);
-        } else {
-          resolve();
-          console.log("Connected to nats server");
-        }
+      this.natsClient.on("connect", () => {
+        resolve();
+        console.log("Successfully connected to nats server");
+      });
+
+      this.natsClient.on("error", (error) => {
+        reject(error);
+        console.error("Failed to connect to nats server \n", error);
       });
 
       this.natsClient.on("close", () => {

@@ -13,9 +13,6 @@ import { body } from "express-validator";
 import BookCollection from "../models/book";
 
 const router = Router();
-const eventPublisher = new EventPublisher(
-  NatsClientWrapper.instance.natsClient
-);
 
 router.post(
   "/api/books",
@@ -29,9 +26,18 @@ router.post(
     // TODO: store events in a collection and remove them only when they are successfully sent.
     // And use a transaction to insert the book and the event.
     const book = await BookCollection.insert(data);
-    await eventPublisher.publish(new BookCreated(book.toBookModel()));
+    await publishEvent(new BookCreated(book.toBookModel()));
     response.status(StatusCodes.CREATED).send(book);
   }
 );
 
+let eventPublisher: EventPublisher;
+
+const publishEvent = async (event: BookCreated) => {
+  eventPublisher ||= new EventPublisher(
+    NatsClientWrapper.instance.natsClient
+  );
+
+  await eventPublisher.publish(event);
+}
 export default router;

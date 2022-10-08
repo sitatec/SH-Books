@@ -15,6 +15,17 @@ spec:
         - name: catalog
           # image: us.gcr.io/shbooks/catalog
           image: beretedocker/shbooks/catalog
+          env:
+            - name: MONGO_DB_URL
+              value: mongodb://catalog-db-service:27017/books
+            - name: NATS_CLUSTER_ID
+              value: shbooks
+            - name: NATS_SERVER_URL
+              value: http://nats-service:4222
+            - name: NATS_CLIENT_ID
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
           envFrom:
             - secretRef:
                 name: jwt-secret

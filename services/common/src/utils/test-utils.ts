@@ -2,31 +2,38 @@ import mongoose from "mongoose";
 import { User } from "../models/user";
 import jwt from "jsonwebtoken";
 
-expect.extend({
-  // TODO test
-  toContainObject(received, argument) {
-    const pass = this.equals(
-      received,
-      expect.arrayContaining([expect.objectContaining(argument)])
-    );
+if (global.expect) {
+  expect.extend({
+    // TODO test
+    toContainObject(received, argument) {
+      const pass = this.equals(
+        received,
+        expect.arrayContaining([expect.objectContaining(argument)])
+      );
 
-    const message = `expected ${this.utils.printReceived(
-      received
-    )} not to contain object ${this.utils.printExpected(argument)}`;
+      const message = `expected ${this.utils.printReceived(
+        received
+      )} not to contain object ${this.utils.printExpected(argument)}`;
 
-    if (pass) {
-      return {
-        message: () => message,
-        pass: true,
-      };
-    } else {
-      return {
-        message: () => message,
-        pass: false,
-      };
-    }
-  },
-});
+      if (pass) {
+        return {
+          message: () => message,
+          pass: true,
+        };
+      } else {
+        return {
+          message: () => message,
+          pass: false,
+        };
+      }
+    },
+  });
+}
+
+declare module global {
+  var expect: jest.Expect | undefined; 
+  // can't put this in the below declaration because jest already declared it.
+}
 
 declare global {
   namespace jest {

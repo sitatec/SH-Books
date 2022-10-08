@@ -13,9 +13,6 @@ import { body } from "express-validator";
 import BookCollection from "../models/book";
 
 const updateBookRouter = Router();
-const eventPublisher = new EventPublisher(
-  NatsClientWrapper.instance.natsClient
-);
 
 updateBookRouter.put(
   "/api/books/:id",
@@ -33,9 +30,19 @@ updateBookRouter.put(
     }
     book.set(request.body);
     await book.save();
-    await eventPublisher.publish(new BookUpdated(book.toBookModel()));
+    await publishEvent(new BookUpdated(book.toBookModel()));
     response.send(book);
   }
 );
+
+let eventPublisher: EventPublisher;
+
+const publishEvent = async (event: BookUpdated) => {
+  eventPublisher ||= new EventPublisher(
+    NatsClientWrapper.instance.natsClient
+  );
+
+  await eventPublisher.publish(event);
+}
 
 export default updateBookRouter;
