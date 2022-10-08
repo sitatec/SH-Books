@@ -1,7 +1,9 @@
 import { Book, clearObjectOwnProperties } from "@shbooks/common";
 import { Document, model, Model, Schema, SchemaOptions } from "mongoose";
 
-export interface BookDocument extends Document, Omit<Book, 'id'> {}
+export interface BookDocument extends Document, Omit<Book, "id"> {
+  toBookModel(): Book;
+}
 
 export interface BookModel extends Model<BookDocument> {
   build(book: Book): BookDocument;
@@ -48,6 +50,9 @@ const bookSchema = new Schema(
 
 bookSchema.statics.build = (book: Book) => new BookCollection(book);
 bookSchema.statics.insert = (book: Book) => BookCollection.create(book);
+bookSchema.methods.toBookModel = function () {
+  return this.toJSON();
+};
 
 const BookCollection = model<BookDocument, BookModel>("Book", bookSchema);
 

@@ -2,7 +2,7 @@ import nats, { Stan } from "node-nats-streaming";
 
 export class NatsClientWrapper {
   private _client?: Stan;
-  static _instance: NatsClientWrapper;
+  private static _instance: NatsClientWrapper;
 
   static get instance(){
     return this._instance ||= new NatsClientWrapper();

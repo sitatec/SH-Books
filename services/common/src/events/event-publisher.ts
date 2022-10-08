@@ -1,10 +1,10 @@
 import { Stan } from "node-nats-streaming";
 import { Event } from "./event";
 
-export abstract class EventPublisher {
+export class EventPublisher {
   constructor(private client: Stan) {}
 
-  publish<E extends Event>(event: E) {
+  publish(event: Event) {
     return new Promise<void>((resolve, reject) => {
       this.client.publish(
         event.channel,
@@ -20,7 +20,7 @@ export abstract class EventPublisher {
     });
   }
 
-  _parseData(data: any) {
+  private _parseData(data: any) {
     return JSON.stringify(data);
   }
 }

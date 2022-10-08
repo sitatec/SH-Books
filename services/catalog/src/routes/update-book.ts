@@ -1,5 +1,8 @@
 import {
+  BookUpdated,
   ensureNotEmpty,
+  EventPublisher,
+  NatsClientWrapper,
   NotFoundError,
   requestValidator,
   requireAuthentication,
@@ -10,6 +13,9 @@ import { body } from "express-validator";
 import BookCollection from "../models/book";
 
 const updateBookRouter = Router();
+const eventPublisher = new EventPublisher(
+  NatsClientWrapper.instance.natsClient
+);
 
 updateBookRouter.put(
   "/api/books/:id",
@@ -27,6 +33,7 @@ updateBookRouter.put(
     }
     book.set(request.body);
     await book.save();
+    await eventPublisher.publish(new BookUpdated(book.toBookModel()));
     response.send(book);
   }
 );
