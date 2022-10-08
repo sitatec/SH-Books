@@ -17,13 +17,20 @@ spec:
                 name: auth-service
                 port:
                   name: auth-port
-          - path: /api/catalog/?(.*)
+          - path: /api/books/?(.*)
             pathType: Prefix
             backend:
               service:
                 name: catalog-service
                 port: 
                   name: catalog-port
+          - path: /api/orders/?(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: order-service
+                port: 
+                  name: order-port
           - path: /?(.*)
             pathType: Prefix
             backend:
