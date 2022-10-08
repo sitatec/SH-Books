@@ -14,3 +14,25 @@ afterAll(async () => {
   }
   await mongoose.connection.close();
 });
+
+beforeEach(jest.clearAllMocks);
+
+jest.mock("@shbooks/common", () => {
+  const originalModule = jest.requireActual("@shbooks/common");
+  return {
+    ...originalModule,
+    NatsClientWrapper: {
+      instance: {
+        natsClient: {
+          publish: jest
+            .fn()
+            .mockImplementation(
+              (_: string, __: string, callback: () => void) => {
+                callback();
+              }
+            ),
+        },
+      },
+    },
+  };
+});

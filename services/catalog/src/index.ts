@@ -7,7 +7,7 @@ const startServer = async () => {
   try {
     ensureJwtKeyEnvVariableSet();
     console.log("Connecting to mongo db...");
-    // TODO: put connection url in env variable
+    // TODO: put mongo connection url and nats connection strings in env variables and ensure they are set before starting the server i.e: like ensureJwtKeyEnvVariableSet()
     await connect("mongodb://catalog-db-service:27017/books");
     console.log("Successfully connected to mongo db");
     await NatsClientWrapper.instance.connect(

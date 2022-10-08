@@ -1,7 +1,13 @@
 import { StatusCodes } from "http-status-codes";
 import supertest from "supertest";
 import app from "../../src/app";
-import { cleanDB, signup, User } from "@shbooks/common";
+import {
+  cleanDB,
+  EventChannel,
+  NatsClientWrapper,
+  signup,
+  User,
+} from "@shbooks/common";
 import BookCollection from "../../src/models/book";
 
 const user: User = {
@@ -195,4 +201,11 @@ it("Should create a book", async () => {
   const bookFromDb = await BookCollection.findById(response.body.id);
   expect(bookFromDb).toBeTruthy();
   expect(bookFromDb?.sellerId).toEqual(user.id);
+
+  expect(NatsClientWrapper.instance.natsClient.publish).toHaveBeenNthCalledWith(
+    1,
+    EventChannel.BookCreated,
+    JSON.stringify(bookFromDb),
+    expect.any(Function)
+  );
 });

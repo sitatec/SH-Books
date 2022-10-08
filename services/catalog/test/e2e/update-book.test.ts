@@ -1,7 +1,7 @@
 import { StatusCodes } from "http-status-codes";
 import supertest from "supertest";
 import app from "../../src/app";
-import { Book, cleanDB, generateValidMongoId, signup, User } from "@shbooks/common";
+import { Book, cleanDB, EventChannel, generateValidMongoId, NatsClientWrapper, signup, User } from "@shbooks/common";
 import BookCollection from "../../src/models/book";
 import mongoose from "mongoose";
 
@@ -210,4 +210,11 @@ it("Should update a book", async () => {
   const bookFromDb = await BookCollection.findById(createdBook);
   expect(bookFromDb?.title).toEqual(newBook.title);
   expect(bookFromDb?.description).toEqual(newBook.description);
+
+  expect(NatsClientWrapper.instance.natsClient.publish).toHaveBeenNthCalledWith(
+    1,
+    EventChannel.BookUpdated,
+    JSON.stringify(bookFromDb),
+    expect.any(Function)
+  );
 });
