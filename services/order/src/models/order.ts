@@ -11,9 +11,10 @@ export interface OrderDocument extends Document, Omit<Order, "id"> {
   toOrderModel(): Order;
 }
 
+type OrderAttr = Omit<Order, 'id' | 'placedAt'>;
 export interface OrderModel extends Model<OrderDocument> {
-  build(order: Order): OrderDocument;
-  insert(order: Order): Promise<OrderDocument>;
+  build(order: OrderAttr): OrderDocument;
+  insert(order: OrderAttr): Promise<OrderDocument>;
 }
 
 const schemaOptions: SchemaOptions = {
@@ -25,7 +26,7 @@ const schemaOptions: SchemaOptions = {
       returnValue.book = document.book;
       returnValue.status = document.status;
       returnValue.placedAt = document.placedAt;
-      returnValue.expireAt = document.expireAt;
+      returnValue.expiresAt = document.expiresAt;
     },
   },
   timestamps: {

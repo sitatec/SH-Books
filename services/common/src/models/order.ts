@@ -6,7 +6,7 @@ export interface Order {
   book: Book;
   status: OrderStatus;
   placedAt: Date;
-  expireAt: Date; // If order placed but no payment associated with the order is made for some period it will automatically be canceled
+  expiresAt: Date; // If order placed but no payment associated with the order is made for some period it will automatically be canceled
 }
 
 export enum OrderStatus {

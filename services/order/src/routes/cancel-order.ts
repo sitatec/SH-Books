@@ -1,13 +1,28 @@
-import { requireAuthentication } from "@shbooks/common";
+import { NotFoundError, OrderStatus, requireAuthentication, UnauthorizedError } from "@shbooks/common";
 import { Request, Response, Router } from "express";
+import { StatusCodes } from "http-status-codes";
+import OrderCollection from "../models/order";
 
 const updateBookRouter = Router();
 
-updateBookRouter.post(
+updateBookRouter.delete(
   "/api/orders/:id",
   requireAuthentication,
   async (request: Request, response: Response) => {
-    response.send({});
+    const { id: orderId } = request.params;
+    const order = await OrderCollection.findById(orderId);
+    if (!order) {
+      throw new NotFoundError();
+    }
+    if (order.userId !== request.currentUser!.id) {
+      throw new UnauthorizedError();
+    }
+    order.status = OrderStatus.Canceled;
+    await order.save();
+
+    // TODO: publish an event saying this was cancelled!
+
+    response.send(StatusCodes.OK);
   }
 );
 
