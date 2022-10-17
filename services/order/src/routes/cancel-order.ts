@@ -1,4 +1,4 @@
-import { NotFoundError, OrderStatus, requireAuthentication, UnauthorizedError } from "@shbooks/common";
+import { EventPublisher, NatsClientWrapper, NotFoundError, OrderCanceled, OrderStatus, requireAuthentication, UnauthorizedError } from "@shbooks/common";
 import { Request, Response, Router } from "express";
 import { StatusCodes } from "http-status-codes";
 import OrderCollection from "../models/order";
@@ -19,19 +19,17 @@ updateBookRouter.delete(
     }
     order.status = OrderStatus.Canceled;
     await order.save();
-
-    // TODO: publish an event saying this was cancelled!
-
+    await publishEvent(new OrderCanceled(order.toOrderModel()));
     response.send(StatusCodes.OK);
   }
 );
 
-// let eventPublisher: EventPublisher;
+let eventPublisher: EventPublisher;
 
-// const publishEvent = async (event: OrderCanceled) => {
-//   eventPublisher ||= new EventPublisher(NatsClientWrapper.instance.natsClient);
+const publishEvent = (event: OrderCanceled) => {
+  eventPublisher ||= new EventPublisher(NatsClientWrapper.instance.natsClient);
 
-//   await eventPublisher.publish(event);
-// };
+  return eventPublisher.publish(event);
+};
 
 export default updateBookRouter;

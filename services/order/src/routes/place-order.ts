@@ -3,7 +3,10 @@ import {
   BadRequestError,
   Book,
   ensureNotEmpty,
+  EventPublisher,
+  NatsClientWrapper,
   NotFoundError,
+  OrderPlaced,
   OrderStatus,
   requestValidator,
   requireAuthentication,
@@ -42,21 +45,17 @@ router.post(
       expiresAt: expiration,
       book: book as Book,
     });
-
-    // TODO: Publish an event saying that an order was created
-
+    await publishEvent(new OrderPlaced(order.toOrderModel()));
     response.status(StatusCodes.CREATED).send(order);
   }
 );
 
-// let eventPublisher: EventPublisher;
+let eventPublisher: EventPublisher;
 
-// const publishEvent = async (event: OrderPlaced) => {
-//   eventPublisher ||= new EventPublisher(
-//     NatsClientWrapper.instance.natsClient
-//   );
+const publishEvent = (event: OrderPlaced) => {
+  eventPublisher ||= new EventPublisher(NatsClientWrapper.instance.natsClient);
 
-//   await eventPublisher.publish(event);
-// }
+  return eventPublisher.publish(event);
+};
 
 export default router;
