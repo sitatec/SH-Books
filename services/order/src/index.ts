@@ -5,6 +5,8 @@ import {
   forceSynchronousErrorLoggin,
   NatsClientWrapper,
 } from "@shbooks/common";
+import { BookCreatedListener } from "./event-listeners/book-created-listener";
+import { BookUpdatedListener } from "./event-listeners/book-updated-listener";
 
 const startServer = async () => {
   console.log("Starting server...");
@@ -12,6 +14,7 @@ const startServer = async () => {
     ensureRequiredEnvVariablesSet();
     await connectMongoDB();
     await connectNatsStreamingServer();
+    listenToEvents();
     app.listen(8080, () => console.log("Server started and listening on 8080"));
   } catch (error) {
     forceSynchronousErrorLoggin(); // Otherwise process may exit before logging completed
@@ -49,5 +52,11 @@ const closeNatsConnectionAndExit = (_: any) => {
   NatsClientWrapper.instance.natsClient.close();
   process.exit();
 };
+
+const listenToEvents = () => {
+  const natsClient = NatsClientWrapper.instance;
+  new BookCreatedListener(natsClient).listen();
+  new BookUpdatedListener(natsClient).listen();
+}
 
 startServer();

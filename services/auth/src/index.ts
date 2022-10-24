@@ -6,6 +6,7 @@ import {
 } from "@shbooks/common";
 
 // TODO use appropriated log levels in the entire project
+// TODO add token refresh endpoint
 
 const startServer = async () => {
   console.log("Starting server...");

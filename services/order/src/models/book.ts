@@ -49,11 +49,17 @@ const bookSchema = new Schema(
   schemaOptions
 );
 
-bookSchema.statics.build = (book: Book) => new BookCollection(book);
-bookSchema.statics.insert = (book: Book) => BookCollection.create(book);
+bookSchema.statics.build = (book: Book) =>
+  new BookCollection({ ...book, _id: book.id });
+
+bookSchema.statics.insert = (book: Book) =>
+  BookCollection.create({ ...book, _id: book.id });
+
 bookSchema.methods.toBookModel = function () {
+  // this === the book document that we just called 'toBookModel' on
   return this.toJSON();
 };
+
 bookSchema.methods.isReserved = async function () {
   // this === the book document that we just called 'isReserved' on
   const existingOrder = await OrderCollection.findOne({
