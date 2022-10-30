@@ -1,8 +1,10 @@
 import { Book, clearObjectOwnProperties } from "@shbooks/common";
 import { Document, model, Model, Schema, SchemaOptions } from "mongoose";
+import { updateIfCurrentPlugin } from "mongoose-update-if-current";
 
 export interface BookDocument extends Document, Omit<Book, "id"> {
   toBookModel(): Book;
+  version: string;
 }
 
 export interface BookModel extends Model<BookDocument> {
@@ -28,6 +30,7 @@ const schemaOptions: SchemaOptions = {
       returnValue.price = document.price;
       returnValue.createdAt = document.createdAt;
       returnValue.authorName = document.authorName;
+      returnValue.version = document.version;
     },
   },
   timestamps: true,
@@ -53,6 +56,10 @@ bookSchema.statics.insert = (book: Book) => BookCollection.create(book);
 bookSchema.methods.toBookModel = function () {
   return this.toJSON();
 };
+
+// For optimistic concurrency control
+bookSchema.set('versionKey', 'version'); 
+bookSchema.plugin(updateIfCurrentPlugin);
 
 const BookCollection = model<BookDocument, BookModel>("Book", bookSchema);
 
