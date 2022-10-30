@@ -1,10 +1,12 @@
 import { Book, clearObjectOwnProperties, OrderStatus } from "@shbooks/common";
 import { Document, model, Model, Schema, SchemaOptions } from "mongoose";
+import { updateIfCurrentPlugin } from "mongoose-update-if-current";
 import OrderCollection from "./order";
 
 export interface BookDocument extends Document, Omit<Book, "id"> {
   toBookModel(): Book;
   isReserved(): Promise<boolean>;
+  version: number;
 }
 
 export interface BookModel extends Model<BookDocument> {
@@ -29,6 +31,7 @@ const schemaOptions: SchemaOptions = {
       returnValue.price = document.price;
       returnValue.createdAt = document.createdAt;
       returnValue.authorName = document.authorName;
+      returnValue.version = document.version;
     },
   },
   timestamps: true,
@@ -75,6 +78,10 @@ bookSchema.methods.isReserved = async function () {
 
   return !!existingOrder;
 };
+
+// For optimistic concurrency control
+bookSchema.set('versionKey', 'version'); 
+bookSchema.plugin(updateIfCurrentPlugin);
 
 const BookCollection = model<BookDocument, BookModel>("Book", bookSchema);
 

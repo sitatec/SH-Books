@@ -9,6 +9,8 @@ import {
 import BookCollection from "../models/book";
 import { EVENTS_QUEUE_GROUP_NAME } from "./common";
 
+type EventDataType = Book & { version: number };
+
 export class BookUpdatedListener extends EventListener<BookUpdated> {
   constructor(natsClient: NatsClientWrapper) {
     super(
@@ -18,8 +20,11 @@ export class BookUpdatedListener extends EventListener<BookUpdated> {
     );
   }
 
-  async onData(data: Book, ack: () => void): Promise<void> {
-    const bookFromDb = await BookCollection.findById(data.id);
+  async onData(data: EventDataType, ack: () => void): Promise<void> {
+    const bookFromDb = await BookCollection.findOne({
+      _id: data.id,
+      version: data.version - 1, // -1 because its  an book *Updated* event, which means the version have been already incremented by the event emitter.
+    });
     if (!bookFromDb) {
       throw new NotFoundError(`Book with id ${data.id} not found`);
     }

@@ -14,6 +14,7 @@ export abstract class EventListener<E extends Event> {
 
   listen() {
     this._subscription.on("message", (message: Message) => {
+      console.log("Event received on", this.channel, "channel");
       this.onData(this._getData(message), message.ack);
     });
   }

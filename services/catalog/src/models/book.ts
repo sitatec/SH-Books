@@ -4,7 +4,7 @@ import { updateIfCurrentPlugin } from "mongoose-update-if-current";
 
 export interface BookDocument extends Document, Omit<Book, "id"> {
   toBookModel(): Book;
-  version: string;
+  version: number;
 }
 
 export interface BookModel extends Model<BookDocument> {
