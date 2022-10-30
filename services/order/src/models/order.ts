@@ -6,9 +6,11 @@ import {
   Schema,
   SchemaOptions,
 } from "mongoose";
+import { updateIfCurrentPlugin } from "mongoose-update-if-current";
 
 export interface OrderDocument extends Document, Omit<Order, "id"> {
   toOrderModel(): Order;
+  version: number;
 }
 
 type OrderAttr = Omit<Order, 'id' | 'placedAt'>;
@@ -27,6 +29,7 @@ const schemaOptions: SchemaOptions = {
       returnValue.status = document.status;
       returnValue.placedAt = document.placedAt;
       returnValue.expiresAt = document.expiresAt;
+      returnValue.version = document.version;
     },
   },
   timestamps: {
@@ -59,6 +62,10 @@ orderSchema.statics.insert = (order: Order) => OrderCollection.create(order);
 orderSchema.methods.toOrderModel = function () {
   return this.toJSON();
 };
+
+// For optimistic concurrency control
+orderSchema.set('versionKey', 'version'); 
+orderSchema.plugin(updateIfCurrentPlugin);
 
 const OrderCollection = model<OrderDocument, OrderModel>("Order", orderSchema);
 
