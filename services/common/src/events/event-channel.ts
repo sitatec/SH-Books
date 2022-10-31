@@ -3,4 +3,5 @@ export enum EventChannel {
   BookUpdated = 'catalog:book-updated',
   OrderPlaced = 'order:order-placed',
   OrderCanceled = 'order:order-canceled',
+  JobQueued = 'job-queue:job-queued',
 }
