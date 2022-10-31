@@ -39,3 +39,5 @@ updateBookRouter.put(
     response.send(book);
   }
 );
+
+export default updateBookRouter;
