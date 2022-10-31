@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: job-worker
+spec:
+  selector:
+    matchLabels:
+      app: job-worker
+  template:
+    metadata:
+      labels:
+        app: job-worker
+    spec:
+      containers:
+        - name: job-worker
+          # image: us.gcr.io/shbooks/job-worker
+          image: beretedocker/shbooks/job-worker
+          env:
+            - name: REDIS_HOST
+              value: job-queue-redis-service
+            - name: NATS_CLUSTER_ID
+              value: shbooks
+            - name: NATS_SERVER_URL
+              value: http://nats-service:4222
+            - name: NATS_CLIENT_ID
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+          envFrom:
+            - secretRef:
+                name: jwt-secret
+          # resources:
+          #   limits:
+          #     cpu: '2'
+          #     memory: 2Gi
+          #   requests:
+          #     cpu: '1'
+          #     memory: 1Gi

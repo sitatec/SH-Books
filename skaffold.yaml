@@ -46,6 +46,15 @@ build:
         manual:
           - dest: .
             src: src/**/*.ts
+    # - image: us.gcr.io/shbooks/job-worker
+    - image: beretedocker/shbooks/job-worker
+      context: services/job-worker
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - dest: .
+            src: src/**/*.ts
     # - image: us.gcr.io/shbooks/frontend
     - image: beretedocker/shbooks/frontend
       context: frontend
