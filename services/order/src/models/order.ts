@@ -9,7 +9,7 @@ import {
 import { updateIfCurrentPlugin } from "mongoose-update-if-current";
 
 export interface OrderDocument extends Document, Omit<Order, "id"> {
-  toOrderModel(): Order;
+  toModel(): Order;
   version: number;
 }
 

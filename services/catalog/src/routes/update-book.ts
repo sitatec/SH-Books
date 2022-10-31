@@ -1,8 +1,7 @@
 import {
+  BadRequestError,
   BookUpdated,
   ensureNotEmpty,
-  EventPublisher,
-  NatsClientWrapper,
   NotFoundError,
   requestValidator,
   requireAuthentication,
@@ -10,6 +9,7 @@ import {
 } from "@shbooks/common";
 import { Request, Response, Router } from "express";
 import { body } from "express-validator";
+import { publishEvent } from "../events/event-publisher";
 import BookCollection from "../models/book";
 
 const updateBookRouter = Router();
@@ -25,24 +25,17 @@ updateBookRouter.put(
     if (!book) {
       throw new NotFoundError();
     }
+
+    if(book.orderId){
+      throw new BadRequestError('Cannot update reserved a book');
+    }
+
     if (book.sellerId != request.currentUser!.id) {
       throw new UnauthorizedError();
     }
     book.set(request.body);
     await book.save();
-    await publishEvent(new BookUpdated(book.toBookModel()));
+    await publishEvent(new BookUpdated(book.toModel()));
     response.send(book);
   }
 );
-
-let eventPublisher: EventPublisher;
-
-const publishEvent = async (event: BookUpdated) => {
-  eventPublisher ||= new EventPublisher(
-    NatsClientWrapper.instance.natsClient
-  );
-
-  await eventPublisher.publish(event);
-}
-
-export default updateBookRouter;

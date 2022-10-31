@@ -19,7 +19,7 @@ updateBookRouter.delete(
     }
     order.status = OrderStatus.Canceled;
     await order.save();
-    await publishEvent(new OrderCanceled(order.toOrderModel()));
+    await publishEvent(new OrderCanceled(order.toModel()));
     response.send(StatusCodes.OK);
   }
 );

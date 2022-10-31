@@ -4,7 +4,7 @@ import { updateIfCurrentPlugin } from "mongoose-update-if-current";
 import OrderCollection from "./order";
 
 export interface BookDocument extends Document, Omit<Book, "id"> {
-  toBookModel(): Book;
+  toModel(): Book;
   isReserved(): Promise<boolean>;
   version: number;
 }

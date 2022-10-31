@@ -45,7 +45,7 @@ router.post(
       expiresAt: expiration,
       book: book as Book,
     });
-    await publishEvent(new OrderPlaced(order.toOrderModel()));
+    await publishEvent(new OrderPlaced(order.toModel()));
     response.status(StatusCodes.CREATED).send(order);
   }
 );

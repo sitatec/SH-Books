@@ -3,8 +3,9 @@ import { Document, model, Model, Schema, SchemaOptions } from "mongoose";
 import { updateIfCurrentPlugin } from "mongoose-update-if-current";
 
 export interface BookDocument extends Document, Omit<Book, "id"> {
-  toBookModel(): Book;
+  toModel(): Book;
   version: number;
+  orderId: string;
 }
 
 export interface BookModel extends Model<BookDocument> {
@@ -47,6 +48,10 @@ const bookSchema = new Schema(
       type: Number,
       require: true,
     },
+    orderId: {
+      type: String,
+      require: false,
+    },
   },
   schemaOptions
 );
@@ -58,7 +63,7 @@ bookSchema.methods.toBookModel = function () {
 };
 
 // For optimistic concurrency control
-bookSchema.set('versionKey', 'version'); 
+bookSchema.set("versionKey", "version");
 bookSchema.plugin(updateIfCurrentPlugin);
 
 const BookCollection = model<BookDocument, BookModel>("Book", bookSchema);
