@@ -3,7 +3,6 @@ import {
   EventChannel,
   EventListener,
   NatsClientWrapper,
-  NotFoundError,
   Order,
   OrderPlaced,
 } from "@shbooks/common";
@@ -23,7 +22,7 @@ export class OrderPlacedListener extends EventListener<OrderPlaced> {
   async onData(data: Order, ack: () => void) {
     const book = await BookCollection.findById(data.book.id);
     if (!book) {
-      throw new NotFoundError("Order not found");
+      throw new Error("Order not found");
     }
     book.set({ orderId: data.id });
     await book.save();

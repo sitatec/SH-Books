@@ -4,7 +4,8 @@ import { EventChannel } from "../event-channel";
 
 export interface Job {
   type: string;
-  data: JsonObject;
+  delay?: number;
+  payload: JsonObject;
 }
 
 export class JobQueued implements Event {

@@ -4,7 +4,6 @@ import {
   EventChannel,
   EventListener,
   NatsClientWrapper,
-  NotFoundError,
 } from "@shbooks/common";
 import BookCollection from "../models/book";
 import { EVENTS_QUEUE_GROUP_NAME } from "./common";
@@ -26,7 +25,7 @@ export class BookUpdatedListener extends EventListener<BookUpdated> {
       version: data.version - 1, // -1 because its  an book *Updated* event, which means the version have been already incremented by the event emitter.
     });
     if (!bookFromDb) {
-      throw new NotFoundError(`Book with id ${data.id} not found`);
+      throw new Error(`Book with id ${data.id} not found`);
     }
     bookFromDb.set(data);
     await bookFromDb.save();

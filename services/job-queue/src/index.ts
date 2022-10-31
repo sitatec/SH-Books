@@ -3,6 +3,9 @@ import {
   forceSynchronousErrorLoggin,
   NatsClientWrapper,
 } from "@shbooks/common";
+import { Queue } from "bullmq";
+import { EventListener } from "./event-listener";
+import { JobQueue } from "./job-queue";
 
 const startServer = async () => {
   console.log("Starting server...");
@@ -21,7 +24,8 @@ const ensureRequiredEnvVariablesSet = () => {
   ensureEnvVariablesSet(
     "NATS_CLUSTER_ID",
     "NATS_CLIENT_ID",
-    "NATS_SERVER_URL"
+    "NATS_SERVER_URL",
+    "REDIS_HOST"
   );
 };
 
@@ -41,7 +45,7 @@ const closeNatsConnectionAndExit = (_: any) => {
 };
 
 const listenToEvents = () => {
-  const natsClient = NatsClientWrapper.instance;
-}
+  new EventListener(NatsClientWrapper.instance, new JobQueue()).listen();
+};
 
 startServer();

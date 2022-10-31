@@ -3,7 +3,6 @@ import {
   EventChannel,
   EventListener,
   NatsClientWrapper,
-  NotFoundError,
   Order,
   OrderCanceled,
 } from "@shbooks/common";
@@ -23,7 +22,7 @@ export class OrderCacelledListener extends EventListener<OrderCanceled> {
   async onData(data: Order, ack: () => void) {
     const book = await BookCollection.findById(data.book.id);
     if (!book) {
-      throw new NotFoundError("Order not found");
+      throw new Error("Order not found");
     }
     book.set({ orderId: null });
     await book.save();
