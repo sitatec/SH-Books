@@ -5,7 +5,6 @@ import { updateIfCurrentPlugin } from "mongoose-update-if-current";
 export interface BookDocument extends Document, Omit<Book, "id"> {
   toModel(): Book;
   version: number;
-  orderId: string;
 }
 
 export interface BookModel extends Model<BookDocument> {
@@ -32,6 +31,7 @@ const schemaOptions: SchemaOptions = {
       returnValue.createdAt = document.createdAt;
       returnValue.authorName = document.authorName;
       returnValue.version = document.version;
+      returnValue.orderId = document.orderId;
     },
   },
   timestamps: true,

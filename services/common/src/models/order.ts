@@ -6,40 +6,34 @@ export interface Order {
   book: Book;
   status: OrderStatus;
   placedAt: Date;
-  expiresAt: Date; // If order placed but no payment associated with the order is made for some period it will automatically be canceled
 }
 
 export enum OrderStatus {
   /**
    * When the order is placed but the book have not been reserved/blocked by the system yet
    */
-  Placed = "placed",
+  Placed = "Placed",
 
   /**
    * When the user manually cancel the order
    */
-  Canceled = "canceled",
+  Canceled = "Canceled",
 
   /**
-   * When the order is placed and it corresponding boot have been successfully reserved by the system 
+   * When the order has been placed, the book is reserved until the user pay
+   * or the order expires.
    */
-  BookReserved = "book-reserved",
-
-  /**
-   * When the order is placed bot the system failed to reserve the corresponding book, whether because
-   * the book have been already reserved (when 2+ users simultaneously try to place and order for the same book), or when
-   * an error happened in the system.
-   */
-  BookReservationFailed = "book-reservation-failed",
-
-  /**
-   * When the user successfully make the payment.
-   */
-  Completed = "completed",
+  AwaitingPayment = "AwaitingPayment",
 
   /**
    * When the order have been placed, the corresponding book have been reserved
    * bot the user didn't make the payment at time.
    */
-  Expired = "expired",
+  Expired = "Expired",
+
+  /**
+   * When the user successfully make the payment.
+   */
+  Completed = "Completed",
+
 }

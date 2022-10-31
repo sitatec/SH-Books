@@ -3,7 +3,6 @@ import {
   forceSynchronousErrorLoggin,
   NatsClientWrapper,
 } from "@shbooks/common";
-import { Queue } from "bullmq";
 import { EventListener } from "./event-listener";
 import { JobQueue } from "./job-queue";
 

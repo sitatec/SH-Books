@@ -28,7 +28,6 @@ const schemaOptions: SchemaOptions = {
       returnValue.book = document.book;
       returnValue.status = document.status;
       returnValue.placedAt = document.placedAt;
-      returnValue.expiresAt = document.expiresAt;
       returnValue.version = document.version;
     },
   },

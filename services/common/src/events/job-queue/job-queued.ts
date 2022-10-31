@@ -10,7 +10,7 @@ export enum JobType {
 
 export interface Job {
   type: JobType;
-  delay?: number;
+  processAt?: Date;
   payload: JsonObject;
 }
 

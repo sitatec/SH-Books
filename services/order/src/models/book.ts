@@ -32,6 +32,7 @@ const schemaOptions: SchemaOptions = {
       returnValue.createdAt = document.createdAt;
       returnValue.authorName = document.authorName;
       returnValue.version = document.version;
+      returnValue.orderId = document.orderId;
     },
   },
   timestamps: true,
@@ -47,6 +48,10 @@ const bookSchema = new Schema(
     price: {
       type: Number,
       require: true,
+    },
+    orderId: {
+      type: String,
+      require: false,
     },
   },
   schemaOptions
@@ -70,7 +75,7 @@ bookSchema.methods.isReserved = async function () {
     status: {
       $in: [
         OrderStatus.Placed,
-        OrderStatus.BookReserved,
+        OrderStatus.AwaitingPayment,
         OrderStatus.Completed,
       ],
     },

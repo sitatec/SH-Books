@@ -12,6 +12,10 @@ export class JobQueue {
       });
       JobQueue._queues.set(job.type, jobQueue);
     }
-    await jobQueue.add(job.type, job.payload, { delay: job.delay });
+    let delay: number | undefined;
+    if (job.processAt) {
+      delay = job.processAt.getTime() - new Date().getTime();
+    }
+    await jobQueue.add(job.type, job.payload, { delay: delay });
   }
 }

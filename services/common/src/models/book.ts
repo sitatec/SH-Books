@@ -7,4 +7,5 @@ export interface Book {
   imageUrl: string;
   sellerId: string;
   createdAt: Date;
+  orderId?: string;
 }
