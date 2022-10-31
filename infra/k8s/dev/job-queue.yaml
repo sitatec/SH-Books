@@ -1,0 +1,69 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: job-queue
+spec:
+  selector:
+    matchLabels:
+      app: job-queue
+  template:
+    metadata:
+      labels:
+        app: job-queue
+    spec:
+      containers:
+        - name: job-queue
+          # image: us.gcr.io/shbooks/job-queue
+          image: beretedocker/shbooks/job-queue
+          env:
+            - name: REDIS_HOST
+              value: job-queue-redis-service
+            - name: NATS_CLUSTER_ID
+              value: shbooks
+            - name: NATS_SERVER_URL
+              value: http://nats-service:4222
+            - name: NATS_CLIENT_ID
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+          envFrom:
+            - secretRef:
+                name: jwt-secret
+          # resources:
+          #   limits:
+          #     cpu: '2'
+          #     memory: 2Gi
+          #   requests:
+          #     cpu: '1'
+          #     memory: 1Gi
+---
+####################### REDIS #########################
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: job-queue-redis
+spec:
+  selector:
+    matchLabels:
+      app: job-queue-redis
+  template:
+    metadata:
+      labels:
+        app: job-queue-redis
+    spec:
+      containers:
+        - name: job-queue-redis
+          image: redis:todo
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: job-queue-redis-service
+spec:
+  selector:
+    app: job-queue-redis
+  ports:
+    - name: job-queue-redis-port
+      port: 6379
+      targetPort: 6379
+      protocol: TCP

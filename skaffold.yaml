@@ -37,6 +37,15 @@ build:
         manual:
           - dest: .
             src: src/**/*.ts
+    # - image: us.gcr.io/shbooks/job-queue
+    - image: beretedocker/shbooks/job-queue
+      context: services/job-queue
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - dest: .
+            src: src/**/*.ts
     # - image: us.gcr.io/shbooks/frontend
     - image: beretedocker/shbooks/frontend
       context: frontend
