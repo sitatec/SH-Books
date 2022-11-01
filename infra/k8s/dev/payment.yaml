@@ -1,0 +1,89 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: payment
+spec:
+  selector:
+    matchLabels:
+      app: payment
+  template:
+    metadata:
+      labels:
+        app: payment
+    spec:
+      containers:
+        - name: payment
+          # image: us.gcr.io/shbooks/payment
+          image: beretedocker/shbooks/payment
+          env:
+            - name: MONGO_DB_URL
+              value: mongodb://payment-db-service:27017/payments
+            - name: NATS_CLUSTER_ID
+              value: shbooks
+            - name: NATS_SERVER_URL
+              value: http://nats-service:4222
+            - name: NATS_CLIENT_ID
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+          envFrom:
+            - secretRef:
+                name: jwt-secret
+            - secretRef:
+                name: stipe-secret
+          # resources:
+          #   limits:
+          #     cpu: '2'
+          #     memory: 2Gi
+          #   requests:
+          #     cpu: '1'
+          #     memory: 1Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: payment-service
+spec:
+  ports:
+    - port: 8080
+      targetPort: 8080
+      name: payment-port
+      protocol: TCP
+---
+####################### DATABASES #########################
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: payment-db
+spec:
+  selector:
+    matchLabels:
+      app: payment-db
+  template:
+    metadata:
+      labels:
+        app: payment-db
+    spec:
+      containers:
+        - name: payment-db
+          image: mongo:6.0.1
+          # resources:
+          #   limits:
+          #     cpu: '2'
+          #     memory: 2Gi
+          #   requests:
+          #     cpu: '1'
+          #     memory: 1Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: payment-db-service
+spec:
+  selector:
+    app: payment-db
+  ports:
+    - name: payment-db-port
+      port: 27017
+      targetPort: 27017
+      protocol: TCP

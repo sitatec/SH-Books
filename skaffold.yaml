@@ -66,3 +66,12 @@ build:
             src: src/**/*.ts
           - dest: .
             src: src/**/*.tsx
+    # - image: us.gcr.io/shbooks/payment
+    - image: beretedocker/shbooks/payment
+      context: services/payment
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - dest: .
+            src: src/**/*.ts
