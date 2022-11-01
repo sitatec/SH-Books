@@ -6,4 +6,5 @@ export enum EventChannel {
   OrderExpired = 'order:order-expired',
   OrderReservationTimeElapsed = 'order:order-reservation-time-elapsed',
   JobQueued = 'job-queue:job-queued',
+  PaymentMade = "payment:payment-made",
 }
