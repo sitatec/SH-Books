@@ -33,8 +33,11 @@ router.post(
     if (order.userId !== req.currentUser!.id) {
       throw new UnauthorizedError();
     }
-    if (order.status === OrderStatus.Canceled) {
-      throw new BadRequestError("Cannot pay for an cancelled order");
+    if (
+      order.status === OrderStatus.Canceled ||
+      order.status === OrderStatus.Expired
+    ) {
+      throw new BadRequestError("Cannot pay for an cancelled or expired order");
     }
 
     const charge = await stripe.charges.create({

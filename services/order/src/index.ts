@@ -7,6 +7,8 @@ import {
 } from "@shbooks/common";
 import { BookCreatedListener } from "./event-listeners/book-created-listener";
 import { BookUpdatedListener } from "./event-listeners/book-updated-listener";
+import { PaymentMadeListener } from "./event-listeners/payment-made-listener";
+import { OrderReservationTimeElapsedListener } from "./event-listeners/order-reservation-time-elapsed-listener";
 
 const startServer = async () => {
   console.log("Starting server...");
@@ -57,6 +59,8 @@ const listenToEvents = () => {
   const natsClient = NatsClientWrapper.instance;
   new BookCreatedListener(natsClient).listen();
   new BookUpdatedListener(natsClient).listen();
+  new PaymentMadeListener(natsClient).listen();
+  new OrderReservationTimeElapsedListener(natsClient).listen();
 }
 
 startServer();

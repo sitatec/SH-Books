@@ -7,6 +7,7 @@ import {
 } from "@shbooks/common";
 import { OrderPlacedListener } from "./events/listeners/order-placed-listener";
 import { OrderCancelledListener } from "./events/listeners/order-cancelled-listener";
+import { OrderExpiredListener } from "./events/listeners/order-expired-listener";
 
 const startServer = async () => {
   console.log("Starting server...");
@@ -58,6 +59,7 @@ const listenToEvents = () => {
   const natsClient = NatsClientWrapper.instance;
   new OrderPlacedListener(natsClient).listen();
   new OrderCancelledListener(natsClient).listen();
+  new OrderExpiredListener(natsClient).listen();
 };
 
 startServer();
