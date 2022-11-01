@@ -7,7 +7,6 @@ import {
   requireAuthentication,
   requestValidator,
   UnauthorizedError,
-  NatsClientWrapper,
   PaymentMade,
 } from "@shbooks/common";
 import { stripe } from "../stripe";
