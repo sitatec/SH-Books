@@ -35,11 +35,10 @@ it("Should returns an error if the book does not exist", async () => {
 it("Should returns an error if the book is already reserved", async () => {
   const book = (await BookCollection.insert(fakeBook)) as Book;
 
-  const order = await OrderCollection.insert({
+  await OrderCollection.insert({
     book,
     userId: "laskdflkajsdf",
     status: OrderStatus.Placed,
-    expiresAt: new Date(),
   });
 
   await request(app)

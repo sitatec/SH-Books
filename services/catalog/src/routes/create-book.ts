@@ -4,8 +4,6 @@ import {
   requestValidator,
   requireAuthentication,
   Book,
-  EventPublisher,
-  NatsClientWrapper,
   BookCreated,
 } from "@shbooks/common";
 import { StatusCodes } from "http-status-codes";

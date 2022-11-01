@@ -58,7 +58,7 @@ const bookSchema = new Schema(
 
 bookSchema.statics.build = (book: Book) => new BookCollection(book);
 bookSchema.statics.insert = (book: Book) => BookCollection.create(book);
-bookSchema.methods.toBookModel = function () {
+bookSchema.methods.toModel = function () {
   return this.toJSON();
 };
 

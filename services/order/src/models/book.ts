@@ -63,7 +63,7 @@ bookSchema.statics.build = (book: Book) =>
 bookSchema.statics.insert = (book: Book) =>
   BookCollection.create({ ...book, _id: book.id });
 
-bookSchema.methods.toBookModel = function () {
+bookSchema.methods.toModel = function () {
   // this === the book document that we just called 'toBookModel' on
   return this.toJSON();
 };

@@ -58,7 +58,7 @@ const orderSchema = new Schema(
 
 orderSchema.statics.build = (order: Order) => new OrderCollection(order);
 orderSchema.statics.insert = (order: Order) => OrderCollection.create(order);
-orderSchema.methods.toOrderModel = function () {
+orderSchema.methods.toModel = function () {
   return this.toJSON();
 };
 
