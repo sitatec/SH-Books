@@ -85,40 +85,40 @@ spec:
       port: 27017
       targetPort: 27017
       protocol: TCP
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: order-elasticsearch
-spec:
-  selector:
-    matchLabels:
-      app: order-elasticsearch
-  template:
-    metadata:
-      labels:
-        app: order-elasticsearch
-    spec:
-      containers:
-      - name: order-elasticsearch
-        image: elasticsearch:8.4.2
-        # resources:
-        #   requests:
-        #     memory: 2Gi
-        #     cpu: '4'
-        #   limits:
-        #     memory: 4Gi
-        #     cpu: '8'
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: order-es-service
-spec:
-  selector:
-    app: order-elasticsearch
-  ports:
-    - port: 9200
-      name: order-es-port
-      targetPort: 9200
-      protocol: TCP
+# ---
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: order-elasticsearch
+# spec:
+#   selector:
+#     matchLabels:
+#       app: order-elasticsearch
+#   template:
+#     metadata:
+#       labels:
+#         app: order-elasticsearch
+#     spec:
+#       containers:
+#       - name: order-elasticsearch
+#         image: elasticsearch:8.4.2
+#         # resources:
+#         #   requests:
+#         #     memory: 2Gi
+#         #     cpu: '4'
+#         #   limits:
+#         #     memory: 4Gi
+#         #     cpu: '8'
+# ---
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: order-es-service
+# spec:
+#   selector:
+#     app: order-elasticsearch
+#   ports:
+#     - port: 9200
+#       name: order-es-port
+#       targetPort: 9200
+#       protocol: TCP
