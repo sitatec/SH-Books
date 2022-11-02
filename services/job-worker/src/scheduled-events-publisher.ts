@@ -2,7 +2,7 @@ import { JobType } from "@shbooks/common";
 import { Worker } from "bullmq";
 import { publishEvent } from "./event-publisher";
 
-export class ScheduledEventsEmitter {
+export class ScheduledEventsPublisher {
   private _initialized = false;
 
   init() {
@@ -10,7 +10,7 @@ export class ScheduledEventsEmitter {
       new Worker(
         JobType.ScheduleEvent,
         async (job) => {
-          publishEvent(job.data);
+         await publishEvent(job.data);
         },
         {
           connection: {

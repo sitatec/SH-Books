@@ -3,7 +3,7 @@ import {
   forceSynchronousErrorLoggin,
   NatsClientWrapper,
 } from "@shbooks/common";
-import { EventListener } from "./event-listener";
+import { JobEventListener } from "./event-listener";
 import { JobQueue } from "./job-queue";
 
 const startServer = async () => {
@@ -44,7 +44,7 @@ const closeNatsConnectionAndExit = (_: any) => {
 };
 
 const listenToEvents = () => {
-  new EventListener(NatsClientWrapper.instance, new JobQueue()).listen();
+  new JobEventListener(NatsClientWrapper.instance, new JobQueue()).listen();
 };
 
 startServer();

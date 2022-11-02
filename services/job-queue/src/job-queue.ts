@@ -8,7 +8,7 @@ export class JobQueue {
     let jobQueue = JobQueue._queues.get(job.type);
     if (!jobQueue) {
       jobQueue = new Queue(job.type, {
-        connection: { host: process.env.REDIS_HOS },
+        connection: { host: process.env.REDIS_HOST },
       });
       JobQueue._queues.set(job.type, jobQueue);
     }
@@ -16,6 +16,6 @@ export class JobQueue {
     if (job.processAt) {
       delay = job.processAt.getTime() - new Date().getTime();
     }
-    await jobQueue.add(job.type, job.payload, { delay: delay });
+    await jobQueue.add(job.type, job.payload, { delay });
   }
 }

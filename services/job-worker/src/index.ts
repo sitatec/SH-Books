@@ -3,7 +3,7 @@ import {
   forceSynchronousErrorLoggin,
   NatsClientWrapper,
 } from "@shbooks/common";
-import { ScheduledEventsEmitter } from "./scheduled-events-emitter";
+import { ScheduledEventsPublisher } from "./scheduled-events-publisher";
 
 const startServer = async () => {
   console.log("Starting server...");
@@ -43,7 +43,7 @@ const closeNatsConnectionAndExit = (_: any) => {
 };
 
 const initWorkers = () => {
-  new ScheduledEventsEmitter().init();
+  new ScheduledEventsPublisher().init();
 };
 
 startServer();
