@@ -2,7 +2,7 @@ import { GetServerSideProps } from "next";
 
 export interface AuthPagesProps {
   /**
-   * The route where the user should be redirected on successfully signed in
+   * The route where the user should be redirected once signed in/up
    */
   redirectRoute: string;
 }
