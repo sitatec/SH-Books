@@ -35,7 +35,7 @@ interface NavItem {
 const navItems: NavItem[] = [
   { title: "My Purchases", path: "/my-purchases" },
   { title: "My Sales", path: "/my-sales" },
-  { title: "Post", path: "/post" },
+  { title: "Post", path: "/books/new" },
 ];
 
 const extendedNaveItems: NavItem[] = [
@@ -223,7 +223,7 @@ const AuthMenu = React.memo(function AuthMenu() {
       </Button>
       /
       <Button sx={{ textTransform: "none" }}>
-        <Link href="/auth/signin">
+        <Link href="/auth/signup">
           <a style={{ color: colors.blue[700] }}>Sign Up</a>
         </Link>
       </Button>

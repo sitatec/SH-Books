@@ -16,7 +16,7 @@ const router = Router();
 router.post(
   "/api/books",
   requireAuthentication,
-  ensureNotEmpty("title", "description", "imageUrl", "authorName"),
+  ensureNotEmpty("title", "description", "authorName"),
   body("price").isFloat({ gt: 0 }),
   requestValidator,
   async (request: Request, response: Response) => {

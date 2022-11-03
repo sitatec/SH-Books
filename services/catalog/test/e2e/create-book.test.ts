@@ -135,32 +135,32 @@ it("Should not allow empty price", async () => {
   await Promise.all(requests);
 });
 
-it("Should not allow empty imageUrl", async () => {
-  const requests = [
-    authenticatedRequest()
-      .send({
-        title: "title",
-        description: "desc",
-        price: 3,
-        sellerId: "id",
-        imageUrl: "",
-        authorName: "author",
-      })
-      .expect(StatusCodes.BAD_REQUEST),
-    authenticatedRequest()
-      .send({
-        title: "title",
-        description: "desc",
-        sellerId: "id",
-        price: 3,
-        authorName: "author",
-      })
-      .expect(StatusCodes.BAD_REQUEST),
-    ensureNoBookCreated(),
-  ];
+// it("Should not allow empty imageUrl", async () => {
+//   const requests = [
+//     authenticatedRequest()
+//       .send({
+//         title: "title",
+//         description: "desc",
+//         price: 3,
+//         sellerId: "id",
+//         imageUrl: "",
+//         authorName: "author",
+//       })
+//       .expect(StatusCodes.BAD_REQUEST),
+//     authenticatedRequest()
+//       .send({
+//         title: "title",
+//         description: "desc",
+//         sellerId: "id",
+//         price: 3,
+//         authorName: "author",
+//       })
+//       .expect(StatusCodes.BAD_REQUEST),
+//     ensureNoBookCreated(),
+//   ];
 
-  await Promise.all(requests);
-});
+//   await Promise.all(requests);
+// });
 
 it("Should not allow empty authorName", async () => {
   const requests = [

@@ -1,6 +1,7 @@
 import { Grid, InputAdornment, TextField, Typography } from "@mui/material";
 import { NextPage } from "next";
 import { useState } from "react";
+import { NumericFormat } from "react-number-format";
 import MarkdownEditor from "../../components/inputs/MarkdownEditor";
 
 const NewBook: NextPage = () => {
@@ -20,13 +21,17 @@ const NewBook: NextPage = () => {
           <TextField fullWidth label="Author Name" />
         </Grid>
         <Grid item xs={12} sm={6}>
-          <TextField
+          <NumericFormat
+            customInput={TextField}
             fullWidth
             label="Price"
-            type="number"
+            decimalSeparator="."
+            thousandSeparator=","
+            decimalScale={2}
             InputProps={{
               endAdornment: <InputAdornment position="end">USD</InputAdornment>,
             }}
+            
           />
         </Grid>
         <Grid item xs={12}>
