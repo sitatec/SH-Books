@@ -4,7 +4,7 @@ export interface Book {
   description: string;
   authorName: string;
   price: number;
-  imageUrl: string;
+  imageUrl?: string;
   sellerId: string;
   createdAt: Date;
   orderId?: string;
