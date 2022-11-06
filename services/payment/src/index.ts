@@ -37,7 +37,7 @@ const ensureRequiredEnvVariablesSet = () => {
 const connectMongoDB = async () => {
   console.log("Connecting to mongo db...");
   await connect(process.env.MONGO_DB_URL!);
-  console.log("Successfully connected to mongo db");
+  console.log("Successfully connected to MongoDB");
 };
 
 const connectNatsStreamingServer = async () => {
