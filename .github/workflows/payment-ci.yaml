@@ -2,7 +2,7 @@ name: payment:ci
 on:
   pull_request:
     paths: 
-      - services/payment
+      - services/payment/**
   
 jobs:
   build:
