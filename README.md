@@ -1,8 +1,8 @@
 ## SHBOOKS (WIP)
 [![AuthCI](https://github.com/sitatec/SH-Books/actions/workflows/auth-ci.yml/badge.svg)](https://github.com/sitatec/SH-Books/actions/workflows/auth-ci.yml)
-[![CatalogCI](https://github.com/sitatec/SH-Books/actions/workflows/catalog-ci.yaml/badge.svg)](https://github.com/sitatec/SH-Books/actions/workflows/catalog-ci.yml)
-[![OrderCI](https://github.com/sitatec/SH-Books/actions/workflows/order-ci.yaml/badge.svg)](https://github.com/sitatec/SH-Books/actions/workflows/order-ci.yml)
-[![PaymentCI](https://github.com/sitatec/SH-Books/actions/workflows/payment-ci.yaml/badge.svg)](https://github.com/sitatec/SH-Books/actions/workflows/payment-ci.yml) 
+[![CatalogCI](https://github.com/sitatec/SH-Books/actions/workflows/catalog-ci.yaml/badge.svg)](https://github.com/sitatec/SH-Books/actions/workflows/catalog-ci.yaml)
+[![OrderCI](https://github.com/sitatec/SH-Books/actions/workflows/order-ci.yaml/badge.svg)](https://github.com/sitatec/SH-Books/actions/workflows/order-ci.yaml)
+[![PaymentCI](https://github.com/sitatec/SH-Books/actions/workflows/payment-ci.yaml/badge.svg)](https://github.com/sitatec/SH-Books/actions/workflows/payment-ci.yaml) 
 
 A second hand books store
 
