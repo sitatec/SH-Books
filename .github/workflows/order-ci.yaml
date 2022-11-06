@@ -2,7 +2,7 @@ name: order:ci
 on:
   pull_request:
     paths: 
-      - services/order
+      - services/order/**
   
 jobs:
   build:
