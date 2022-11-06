@@ -1,0 +1,12 @@
+name: order:ci
+on:
+  pull_request:
+    paths: 
+      - services/order
+  
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: cd services/order && npm ci && npm run ci-test
