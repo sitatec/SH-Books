@@ -1,8 +1,8 @@
 ## SHBOOKS (WIP)
-![AuthCI](https://github.com/sitatec/SH-Books/actions/workflows/auth-ci.yml/badge.svg) 
-![CatalogCI](https://github.com/sitatec/SH-Books/actions/workflows/catalog-ci.yaml/badge.svg) 
-![OrderCI](https://github.com/sitatec/SH-Books/actions/workflows/order-ci.yaml/badge.svg) 
-![PaymentCI](https://github.com/sitatec/SH-Books/actions/workflows/payment-ci.yaml/badge.svg) 
+[![AuthCI](https://github.com/sitatec/SH-Books/actions/workflows/auth-ci.yml/badge.svg)](https://github.com/sitatec/SH-Books/actions/workflows/auth-ci.yml)
+[![CatalogCI](https://github.com/sitatec/SH-Books/actions/workflows/catalog-ci.yaml/badge.svg)](https://github.com/sitatec/SH-Books/actions/workflows/catalog-ci.yml)
+[![OrderCI](https://github.com/sitatec/SH-Books/actions/workflows/order-ci.yaml/badge.svg)](https://github.com/sitatec/SH-Books/actions/workflows/order-ci.yml)
+[![PaymentCI](https://github.com/sitatec/SH-Books/actions/workflows/payment-ci.yaml/badge.svg)](https://github.com/sitatec/SH-Books/actions/workflows/payment-ci.yml) 
 
 A second hand books store
 
