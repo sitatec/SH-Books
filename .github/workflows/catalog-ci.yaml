@@ -2,7 +2,7 @@ name: catalog:ci
 on:
   pull_request:
     paths: 
-      - services/catalog
+      - services/catalog/**
   
 jobs:
   build:
