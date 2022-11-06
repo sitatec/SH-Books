@@ -2,7 +2,7 @@ name: auth:ci
 on:
   pull_request:
     paths: 
-      - services/auth
+      - services/auth/**
   
 jobs:
   build:
