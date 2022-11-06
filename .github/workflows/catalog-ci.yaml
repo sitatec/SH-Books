@@ -1,0 +1,12 @@
+name: catalog:ci
+on:
+  pull_request:
+    paths: 
+      - services/catalog
+  
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: cd services/catalog && npm ci && npm run ci-test
